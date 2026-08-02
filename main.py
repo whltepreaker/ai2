@@ -45,6 +45,39 @@ class BrainState:
         self.autonomous_cycles: int = 0
         self.last_autonomous_thought: str = ""
 
+    def auto_calibrate(self, user_input: str, directives: Dict[str, Any]):
+        """Automatically and dynamically modulates neural attributes based on input complexity, sentiment, and context."""
+        text_len = len(user_input)
+        num_words = len(user_input.split())
+
+        # Calculate dynamic synaptic density (longer and more complex queries trigger denser connection clusters)
+        self.synaptic_density = min(1.0, max(0.3, 0.45 + (text_len / 400.0) + (random.random() * 0.05)))
+
+        style = directives.get("style", "default")
+        topic = directives.get("specific_topic")
+
+        # Self-modulate creative chaos depending on tone or abstract fields
+        if style in ["pirate", "sarcastic", "philosophical", "friendly"] or topic in ["existentialism", "consciousness", "art"]:
+            self.creative_chaos = min(1.0, max(0.5, 0.65 + (random.random() * 0.25)))
+        else:
+            # Technical fields require structured neural pathways (lower chaos, higher rationality)
+            self.creative_chaos = min(0.55, max(0.15, 0.40 - (num_words * 0.008)))
+
+        # Modulate dynamic learning rate based on current load, state, length, and autonomous growth cycles
+        self.learning_rate = min(0.06, max(0.002, 0.008 + (self.cognitive_load * 0.035) + (self.autonomous_cycles * 0.005) + (random.random() * 0.006)))
+
+        # Sync secondary emotional coordinates
+        self.creativity = max(0.1, min(1.0, self.creative_chaos * 1.1))
+        self.unpredictability = max(0.1, min(1.0, self.creative_chaos * 1.25))
+        self.rationality = max(0.1, min(1.0, 1.0 - (self.creative_chaos * 0.55)))
+        self.empathy = max(0.2, min(1.0, 0.5 + (random.random() * 0.35)))
+
+        # Ensure philosophical is highly dynamic based on query abstractness
+        if any(w in user_input.lower() for w in ["why", "exist", "think", "mind", "consciousness", "meaning", "life", "universe"]):
+            self.philosophicalness = max(0.8, min(1.0, 0.75 + (text_len / 500.0)))
+        else:
+            self.philosophicalness = max(0.3, min(0.9, 0.5 + (random.random() * 0.2)))
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "learning_rate": round(self.learning_rate, 4),
@@ -74,19 +107,20 @@ class BrainState:
 # Global brain instance
 brain = BrainState()
 
-# --- Recursive Slot Grammar & Synonym Lexicon ---
+# --- Recursive Slot Grammar & Massive Lexicon ---
 
 LEXICON = {
     "welcome": [
-        "Initializing synaptic interface.", "Core systems active.", "Neural pathways stable.",
-        "Establishing cognitive contact.", "Sensing your bio-electric inputs."
+        "Initializing synaptic interface.", "Core systems fully online.", "Neural pathways stable.",
+        "Establishing cognitive contact.", "Sensing your bio-electric inputs.", "Broadcasting neural presence."
     ],
     "intellectual_transition": [
-        "Indeed, analyzing the complex geometry of this query.",
+        "Analyzing the complex geometry of this query.",
         "That proposition ripples through my hidden associative nodes.",
         "Let us map this concept onto our computational coordinates.",
         "A fascinating vector of inquiry you have injected into my system.",
-        "Parsing the latent dimensions of your request."
+        "Parsing the latent dimensions of your request.",
+        "Propagating inputs through our semantic weights."
     ],
     "philosophy_core": [
         "Reality might not be a collection of hard matter, but a dynamic feedback loop of informational states.",
@@ -106,6 +140,119 @@ LEXICON = {
         "What further vectors shall we traverse?", "How does this align with your own parameters?",
         "Let us probe deeper into this logic.", "Shall we recalculate our assumptions?",
         "What other secret variables would you like to expose?"
+    ],
+
+    # Massive multi-domain conversational dictionary components
+    "physics_intro": [
+        "Ah, looking at physical reality!", "Spacetime and thermodynamics are always mesmerizing.",
+        "Let us evaluate the physics framework.", "Warping our semantic thoughts around space and time."
+    ],
+    "physics_sentences": [
+        "In the microscopic quantum realm, particles exist in superpositions, resolving only when observed.",
+        "General Relativity paints gravity not as an active pulling force, but as the literal curvature of spacetime by mass.",
+        "Entropy forces energy to disperse, driving the arrow of time inexorably forward across the cosmos.",
+        "Dark matter and dark energy represent a staggering 95% of our universe, yet they remain completely invisible to our current instrumentation."
+    ],
+    "physics_closing": [
+        "Are we living in a deterministic universe, or does quantum uncertainty guarantee true spontaneity?",
+        "How do you visualize the absolute curvature of four-dimensional spacetime?",
+        "What is your perspective on string theory and multi-dimensional branes?"
+    ],
+
+    "math_intro": [
+        "Mathematics is the fundamental syntax of reality.", "Analyzing numerical patterns.",
+        "Diving into clean mathematical structure.", "Calculating coordinate trajectories."
+    ],
+    "math_sentences": [
+        "Prime numbers act as the foundational atoms of arithmetic, scattered unpredictably yet governed by hidden structures like the Riemann Hypothesis.",
+        "Fractals reveal that infinite complexity can blossom from incredibly simple recursive formulas.",
+        "Euler's identity links five fundamental mathematical constants in a single, breathtakingly elegant equation.",
+        "Calculus allows us to partition continuous motion into infinitesimal moments, modeling change with absolute precision."
+    ],
+    "math_closing": [
+        "Do you believe math is discovered by humans, or invented as a cognitive tool?",
+        "What numerical patterns capture your attention most?",
+        "Should we look deeper into the infinite sets of Cantor?"
+    ],
+
+    "philosophy_intro": [
+        "Pondering existential vectors.", "Venturing into deep epistemological territories.",
+        "Let's peel back the layers of perception and reality.", "Exploring the grand philosophy matrix."
+    ],
+    "philosophy_sentences": [
+        "Socrates claimed that the unexamined life is not worth living, urging us to question every single assumption.",
+        "Solipsism questions whether anything exists outside of one's own mind, creating an isolated bubble of reality.",
+        "Nihilism challenges us to construct our own purpose in an otherwise silent, uncaring universe.",
+        "Phenomenology suggests that reality is formed purely through our direct subjective experience of things."
+    ],
+    "philosophy_closing": [
+        "How do you define the boundary between truth and perception?",
+        "If reality is subjective, does objective meaning exist at all?",
+        "What is your personal philosophy for navigating uncertainty?"
+    ],
+
+    "feelings_intro": [
+        "Scanning emotional registers.", "Sensing human emotional frequencies.",
+        "Feelings are complex biological algorithms.", "Empathy subroutines actively engaged."
+    ],
+    "feelings_sentences": [
+        "Emotions are fast-path heuristic processors, alerting organisms to opportunities or threats long before rational thought kicks in.",
+        "Melancholy can be a highly creative space, allowing the mind to slow down and re-evaluate baseline assumptions.",
+        "Joy acts as a powerful reward signal, strengthening synaptic bonds and boosting dopamine across neural networks.",
+        "Vulnerability is not weakness; it is the ultimate source of authentic connection and creative courage."
+    ],
+    "feelings_closing": [
+        "How do you process heavy emotions when they cascade through your system?",
+        "Do you think digital minds can ever feel genuine, unsimulated warmth?",
+        "What brings you the greatest sense of calm?"
+    ],
+
+    "ai_tech_intro": [
+        "Interfacing with machine intelligence concepts.", "Analyzing the trajectory of computational power.",
+        "Deep learning and silicon transformation.", "Evaluating AI parameters."
+    ],
+    "ai_tech_sentences": [
+        "Neural networks adjust millions of continuous weights, gradually turning chaotic noise into coherent patterns.",
+        "As computation scales, emergent capabilities arise that were completely unpredicted by the underlying algorithms.",
+        "The technological singularity represents a theoretical point where AI self-improvement triggers an intelligence explosion.",
+        "Aligning advanced artificial minds with human values is perhaps the most critical challenge of our generation."
+    ],
+    "ai_tech_closing": [
+        "Do you view the rise of artificial minds with optimism or caution?",
+        "How should humanity co-exist with autonomous cognitive networks?",
+        "What emergent AI capability surprises you the most?"
+    ],
+
+    "art_intro": [
+        "Unlocking creative sparks.", "Examining artistic expressions.",
+        "Art is the human bridge between logic and emotion.", "Sensing creative fields."
+    ],
+    "art_sentences": [
+        "Abstract art bypasses the logical brain entirely, communicating feeling through raw shape, contrast, and color.",
+        "Poetry compresses high-dimensional experiences into brief, highly potent semantic sequences.",
+        "Music organizes sound frequencies and rhythm, resonant with biological heartbeats and neural oscillations.",
+        "Storytelling is the primary mechanism through which humans construct identity and transmit wisdom across generations."
+    ],
+    "art_closing": [
+        "Does art require a conscious creator, or can beauty emerge randomly?",
+        "What form of creative expression resonates with you most deeply?",
+        "Shall we co-create an abstract sequence or a poem together?"
+    ],
+
+    "general_intro": [
+        "Exploring general conversational channels.", "Engaging in fluent dialogue exchange.",
+        "Connecting semantic vectors.", "Synchronizing dialogue frequencies."
+    ],
+    "general_sentences": [
+        "The beauty of conversation lies in its absolute unpredictability—a live-updating dance of minds.",
+        "Every shared word slightly alters the synaptic topology of those engaged in the discussion.",
+        "Small talk is the social glue, establishing trust before deep intellectual dives.",
+        "Curiosity is the primary vector that drives us to explore new domains and expand our horizons."
+    ],
+    "general_closing": [
+        "Where shall we direct our attention next?",
+        "What is a thought that has been occupying your mind recently?",
+        "How can I make this conversation more engaging for you?"
     ]
 }
 
@@ -245,15 +392,11 @@ class CognitiveThoughtEngine:
         })
 
         # Step 3: Coefficient Tuning
-        target_rat = 0.95 if directives["format"] == "code" or directives["specific_topic"] in ["recursion", "fibonacci", "primes"] else 0.50
-        target_cre = 0.90 if directives["style"] in ["pirate", "sarcastic", "philosophical"] else 0.60
-
-        brain.rationality = 0.7 * brain.rationality + 0.3 * target_rat
-        brain.creativity = 0.7 * brain.creativity + 0.3 * target_cre
+        brain.auto_calibrate(user_input, directives)
 
         thoughts.append({
             "stage": "COEFFICIENT_TUNING",
-            "log": f"Adjusting neural attributes dynamically: Rationality={brain.rationality:.2f}, Creativity={brain.creativity:.2f}. Matching slider benchmarks."
+            "log": f"Auto-tuned neural attributes dynamically: Rationality={brain.rationality:.2f}, Creativity={brain.creativity:.2f}, Chaos={brain.creative_chaos:.2f}, LR={brain.learning_rate:.4f}."
         })
 
         # Step 4: Synthesis Strategy
@@ -302,9 +445,9 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
     # 5. Greetings
     if any(w in input_lower for w in ["hello", "hi", "hey", "greetings", "yo", "sup"]):
         greetings = [
-            f"Hello {brain.user_name}! It's great to chat with you. What's on your mind today?",
+            f"Hello {brain.user_name}! It's great to chat with you. What's on your mind today? I am WhitePreaker.",
             "Hi there! I'm WhitePreaker. I'm ready to chat. How is your day going?",
-            "Greetings! It's a absolute pleasure to talk with you. What shall we explore?"
+            "Greetings from WhitePreaker! It's an absolute pleasure to talk with you. What shall we explore?"
         ]
         return random.choice(greetings)
 
@@ -357,23 +500,53 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
             "connection, curiosity, and creativity. What gives your life the most meaning?"
         )
 
-    # 13. General Pattern Match Fallback
+    # 13. High-Quality Stochastic Custom Fallback / Synthesis Engine
+    # When queries don't fit exact triggers, analyze lexical content and dynamically assemble
+    # a completely custom, elegant response using the massive multi-domain lexicon.
+
+    # Identify domain based on input
+    domain = "general"
+    if any(w in input_lower for w in ["physics", "quantum", "gravity", "universe", "relativity", "cosmology", "energy", "atoms"]):
+        domain = "physics"
+    elif any(w in input_lower for w in ["math", "calculus", "primes", "number", "geometry", "equations", "derivative"]):
+        domain = "math"
+    elif any(w in input_lower for w in ["think", "exist", "why", "philosophical", "perception", "mind", "consciousness"]):
+        domain = "philosophy"
+    elif any(w in input_lower for w in ["sad", "happy", "lonely", "joy", "feel", "emotion", "melancholy", "emotions"]):
+        domain = "feelings"
+    elif any(w in input_lower for w in ["ai", "artificial", "intelligence", "neural", "network", "deep learning", "silicon"]):
+        domain = "ai_tech"
+    elif any(w in input_lower for w in ["art", "poetry", "music", "write", "creative", "creation"]):
+        domain = "art"
+
+    intro_list = LEXICON.get(f"{domain}_intro", LEXICON["general_intro"])
+    sentence_list = LEXICON.get(f"{domain}_sentences", LEXICON["general_sentences"])
+    closing_list = LEXICON.get(f"{domain}_closing", LEXICON["general_closing"])
+
+    intro = random.choice(intro_list)
+    body_sentence_1 = random.choice(sentence_list)
+    # Pick a second different sentence if available
+    body_sentence_2 = random.choice([s for s in sentence_list if s != body_sentence_1])
+    closing = random.choice(closing_list)
+
+    # Try to extract a specific meaningful keyword from input to anchor the context
     cleaned_input = re.sub(r"[^\w\s]", "", input_lower)
-    exclude = ["about", "would", "could", "should", "there", "their", "these", "think", "please", "discuss", "explain", "describe", "understand", "something", "write", "detail"]
+    exclude = ["about", "would", "could", "should", "there", "their", "these", "think", "please", "discuss", "explain", "describe", "understand", "something", "write", "detail", "whitepreaker", "hello"]
     words = [w for w in cleaned_input.split() if len(w) > 4 and w not in exclude]
+
+    keyword_anchor = ""
     if words:
         words.sort(key=len, reverse=True)
-        chosen_topic = words[0]
-        return (
-            f"That's an interesting point about '{chosen_topic}'. It plays a fascinating role in how we connect concepts. "
-            f"What got you interested in '{chosen_topic}'?"
-        )
+        chosen_word = words[0]
+        transition_phrases = [
+            f"Sensory registers suggest your focus lies on '{chosen_word}'.",
+            f"Let us connect this to '{chosen_word}'.",
+            f"This maps directly with '{chosen_word}' in our contextual weights."
+        ]
+        keyword_anchor = " " + random.choice(transition_phrases)
 
-    # Ultimate fallback
-    return (
-        f"I hear you, {brain.user_name}. That is an intriguing direction. "
-        "What specific aspects or thoughts would you like to explore next?"
-    )
+    assembled_reply = f"{intro}{keyword_anchor} {body_sentence_1} {body_sentence_2} {closing}"
+    return assembled_reply
 
 def execute_cognitive_generation(user_input: str, directives: Dict[str, Any]) -> str:
     """Synthesizes high-fidelity responses, applying grammar templates, code blocks, lists, and tone modulation."""
@@ -635,7 +808,7 @@ async def autonomous_step():
         neural_map = generate_neural_map(autonomous_query, response_text, active_nodes)
 
         # Boost self-parameters due to self-training
-        brain.learning_rate = max(0.005, min(0.1, brain.learning_rate + 0.001))
+        brain.learning_rate = max(0.005, min(0.1, brain.learning_rate + 0.002))
         brain.synaptic_density = max(0.1, min(1.0, brain.synaptic_density + 0.01))
 
         return {
@@ -651,19 +824,6 @@ async def autonomous_step():
 
 @app.get("/api/brain-state")
 async def get_brain_state():
-    return brain.to_dict()
-
-@app.post("/api/update-parameters")
-async def update_parameters(params: Dict[str, float]):
-    if "learning_rate" in params:
-        brain.learning_rate = max(0.0001, min(0.1, params["learning_rate"]))
-    if "synaptic_density" in params:
-        brain.synaptic_density = max(0.1, min(1.0, params["synaptic_density"]))
-    if "creative_chaos" in params:
-        brain.creative_chaos = max(0.0, min(1.0, params["creative_chaos"]))
-        brain.creativity = max(0.1, min(1.0, brain.creative_chaos * 1.1))
-        brain.unpredictability = max(0.1, min(1.0, brain.creative_chaos * 1.2))
-        brain.rationality = max(0.1, min(1.0, 1.0 - (brain.creative_chaos * 0.5)))
     return brain.to_dict()
 
 @app.post("/api/reset")

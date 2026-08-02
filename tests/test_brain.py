@@ -155,3 +155,39 @@ def test_api_reset():
     data = response.json()
     assert data["brain_state"]["autonomous_cycles"] == 0
     assert data["brain_state"]["learning_rate"] == 0.015
+
+def test_parameter_auto_modulation():
+    """Verify that learning rate, synaptic density, and creative chaos auto-modulate and stay within bounds."""
+    brain.reset()
+    lr_init = brain.learning_rate
+    sd_init = brain.synaptic_density
+    cc_init = brain.creative_chaos
+
+    # Send a highly complex prompt to trigger modulation
+    client.post("/api/chat", json={"text": "Explain quantum superpositions and chaotic unpredictable jump states in a complex scientific way with maximum details."})
+
+    # Assert parameters changed
+    assert brain.learning_rate != lr_init or brain.synaptic_density != sd_init or brain.creative_chaos != cc_init
+
+    # Ensure all parameters remain capped strictly in [0.0, 1.0]
+    assert 0.0 <= brain.learning_rate <= 1.0
+    assert 0.0 <= brain.synaptic_density <= 1.0
+    assert 0.0 <= brain.creative_chaos <= 1.0
+
+
+def test_fallback_response_uniqueness():
+    """Verify that consecutive fallback responses are not identical and include context/topic dynamically."""
+    brain.reset()
+
+    # Send two unique unknown fallback queries
+    res1 = client.post("/api/chat", json={"text": "Who is the prime minister of some imaginary country?"})
+    res2 = client.post("/api/chat", json={"text": "What is the taste of a purple elephant's shadow?"})
+
+    ans1 = res1.json()["response"]
+    ans2 = res2.json()["response"]
+
+    # They shouldn't be identical
+    assert ans1 != ans2
+
+    # They should reflect some extracted context/topic
+    assert "prime minister" in ans1.lower() or "imaginary country" in ans1.lower() or "shadow" in ans2.lower() or "elephant" in ans2.lower()

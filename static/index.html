@@ -105,8 +105,9 @@
               <span>LEARNING RATE (LR)</span>
               <span class="text-cyan-400 font-bold" id="valueLr">0.0150</span>
             </div>
-            <input id="sliderLr" type="range" min="0.001" max="0.05" step="0.001" value="0.015"
-              class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400">
+            <div class="h-2 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div id="barLr" class="h-full bg-cyan-400 transition-all duration-500 shadow-[0_0_8px_rgba(34,211,238,0.5)]" style="width: 15%"></div>
+            </div>
           </div>
 
           <!-- Synaptic Density -->
@@ -115,8 +116,9 @@
               <span>SYNAPTIC DENSITY</span>
               <span class="text-cyan-400 font-bold" id="valueDensity">0.85</span>
             </div>
-            <input id="sliderDensity" type="range" min="0.3" max="1.0" step="0.05" value="0.85"
-              class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400">
+            <div class="h-2 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div id="barDensity" class="h-full bg-sky-400 transition-all duration-500 shadow-[0_0_8px_rgba(56,189,248,0.5)]" style="width: 85%"></div>
+            </div>
           </div>
 
           <!-- Creative Chaos -->
@@ -125,8 +127,9 @@
               <span>CREATIVE CHAOS</span>
               <span class="text-pink-500 font-bold" id="valueChaos">0.70</span>
             </div>
-            <input id="sliderChaos" type="range" min="0.1" max="1.0" step="0.05" value="0.70"
-              class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-pink-500">
+            <div class="h-2 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div id="barChaos" class="h-full bg-pink-500 transition-all duration-500 shadow-[0_0_8px_rgba(236,72,153,0.5)]" style="width: 70%"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -346,19 +349,6 @@
           </select>
         </div>
 
-        <!-- Speech Speed modulation -->
-        <div class="flex items-center gap-2">
-          <label for="speechRate" class="text-gray-400">Tempo:</label>
-          <input id="speechRate" type="range" min="0.5" max="2" step="0.1" value="1.0" class="w-16 accent-cyan-400">
-          <span id="rateValue" class="text-cyan-400">1.0x</span>
-        </div>
-
-        <!-- Speech Pitch modulation -->
-        <div class="flex items-center gap-2">
-          <label for="speechPitch" class="text-gray-400">Pitch:</label>
-          <input id="speechPitch" type="range" min="0.5" max="2" step="0.1" value="1.0" class="w-16 accent-pink-500">
-          <span id="pitchValue" class="text-pink-500">1.0</span>
-        </div>
       </div>
 
       <!-- Mute vocal output toggle -->

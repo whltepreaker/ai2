@@ -18,22 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnListen = document.getElementById('btnListen');
   const listenStatus = document.getElementById('listenStatus');
   const voiceSelect = document.getElementById('voiceSelect');
-  const speechRate = document.getElementById('speechRate');
-  const rateValue = document.getElementById('rateValue');
-  const speechPitch = document.getElementById('speechPitch');
-  const pitchValue = document.getElementById('pitchValue');
   const muteToggle = document.getElementById('muteToggle');
   const btnReset = document.getElementById('btnReset');
   const btnAutonomous = document.getElementById('btnAutonomous');
   const autoText = document.getElementById('autoText');
   const autoIndicator = document.getElementById('autoIndicator');
 
-  // Parameter sliders
-  const sliderLr = document.getElementById('sliderLr');
+  // Parameter elements (Auto-fluctuating)
+  const barLr = document.getElementById('barLr');
   const valueLr = document.getElementById('valueLr');
-  const sliderDensity = document.getElementById('sliderDensity');
+  const barDensity = document.getElementById('barDensity');
   const valueDensity = document.getElementById('valueDensity');
-  const sliderChaos = document.getElementById('sliderChaos');
+  const barChaos = document.getElementById('barChaos');
   const valueChaos = document.getElementById('valueChaos');
 
   // Diagnostics UI
@@ -144,8 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (voiceSelect.value !== '') {
       utterance.voice = synthesisVoices[parseInt(voiceSelect.value)];
     }
-    utterance.rate = parseFloat(speechRate.value);
-    utterance.pitch = parseFloat(speechPitch.value);
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
 
     utterance.onstart = () => {
       sysLog("Vocal synthesizer active and broadcasting.", "OK");
@@ -229,76 +225,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Parameter Sliders Sync ---
-  function initSliders() {
-    sliderLr.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      valueLr.textContent = val.toFixed(4);
-      visualizer.learningRate = val;
-      updateBackendParams();
-    });
-
-    sliderDensity.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      valueDensity.textContent = val.toFixed(2);
-      visualizer.synapticDensity = val;
-      visualizer.generateConnections();
-      updateBackendParams();
-    });
-
-    sliderChaos.addEventListener('input', (e) => {
-      const val = parseFloat(e.target.value);
-      valueChaos.textContent = val.toFixed(2);
-      visualizer.creativeChaos = val;
-      updateBackendParams();
-    });
-
-    speechRate.addEventListener('input', (e) => {
-      rateValue.textContent = `${e.target.value}x`;
-    });
-    speechPitch.addEventListener('input', (e) => {
-      pitchValue.textContent = e.target.value;
-    });
-
-    muteToggle.addEventListener('change', (e) => {
-      ttsEnabled = !e.target.checked;
-      sysLog(`Speech Synthesis system feedback: ${ttsEnabled ? 'ENABLED' : 'MUTED'}`, "SYS");
-      if (!ttsEnabled && 'speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
-    });
-  }
-
-  async function updateBackendParams() {
-    const lr = parseFloat(sliderLr.value);
-    const density = parseFloat(sliderDensity.value);
-    const chaos = parseFloat(sliderChaos.value);
-
-    try {
-      const response = await fetch('/api/update-parameters', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          learning_rate: lr,
-          synaptic_density: density,
-          creative_chaos: chaos
-        })
+  // --- System Controller Options ---
+  function initSystemController() {
+    if (muteToggle) {
+      muteToggle.addEventListener('change', (e) => {
+        ttsEnabled = !e.target.checked;
+        sysLog(`Speech Synthesis system feedback: ${ttsEnabled ? 'ENABLED' : 'MUTED'}`, "SYS");
+        if (!ttsEnabled && 'speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
       });
-      const data = await response.json();
-      updateStateHUD(data);
-    } catch (e) {
-      sysLog("Sync endpoint connection interrupted.", "WARN");
     }
   }
 
   // --- Update HUD State & Status Elements ---
   function updateStateHUD(state) {
-    sliderLr.value = state.learning_rate;
     valueLr.textContent = state.learning_rate.toFixed(4);
-    sliderDensity.value = state.synaptic_density;
     valueDensity.textContent = state.synaptic_density.toFixed(2);
-    sliderChaos.value = state.creative_chaos;
     valueChaos.textContent = state.creative_chaos.toFixed(2);
+
+    // Set auto bar widths dynamically
+    if (barLr) barLr.style.width = `${(state.learning_rate / 0.06) * 100}%`;
+    if (barDensity) barDensity.style.width = `${state.synaptic_density * 100}%`;
+    if (barChaos) barChaos.style.width = `${state.creative_chaos * 100}%`;
+
+    // Sync browser canvas visualizer weights automatically
+    if (visualizer) {
+      visualizer.learningRate = state.learning_rate;
+      if (Math.abs(visualizer.synapticDensity - state.synaptic_density) > 0.05) {
+        visualizer.synapticDensity = state.synaptic_density;
+        visualizer.generateConnections();
+      }
+      visualizer.creativeChaos = state.creative_chaos;
+    }
 
     brainLoad.style.width = `${state.cognitive_load * 100}%`;
     brainLoadText.textContent = `${Math.round(state.cognitive_load * 100)}%`;
@@ -530,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Boot Initialization ---
   initSpeechSynthesis();
   initSpeechRecognition();
-  initSliders();
+  initSystemController();
 
   fetch('/api/brain-state')
     .then(r => r.json())
