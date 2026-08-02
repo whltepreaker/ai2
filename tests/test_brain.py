@@ -88,6 +88,29 @@ def test_api_chat_instruction_following():
     # Modulated response check
     assert "Arrr" in json_data["response"] or "Ahoy" in json_data["response"] or "Matey" in json_data["response"]
 
+
+def test_conversational_patterns_and_greetings():
+    """Verify that greetings and specific conversational intents yield natural human-like responses."""
+    # Test Greeting
+    response = client.post("/api/chat", json={"text": "hello whitepreaker"})
+    assert response.status_code == 200
+    data = response.json()
+    assert "WhitePreaker" in data["response"]
+    assert "explore" in data["response"] or "chat" in data["response"] or "mind" in data["response"]
+
+    # Test Identity
+    response = client.post("/api/chat", json={"text": "who are you?"})
+    assert "WhitePreaker" in response.json()["response"]
+    assert "conversational AI" in response.json()["response"]
+
+    # Test Scientific Domain
+    response = client.post("/api/chat", json={"text": "tell me about quantum physics"})
+    assert "spacetime" in response.json()["response"] or "quantum superposition" in response.json()["response"]
+
+    # Test Fallback and context extraction
+    response = client.post("/api/chat", json={"text": "let us discuss photosynthesis"})
+    assert "photosynthesis" in response.json()["response"]
+
 def test_api_autonomous_step():
     """Verify that the /api/autonomous-step endpoint processes self-sufficient thought loops."""
     # Run cycle 1
