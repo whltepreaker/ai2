@@ -27,13 +27,24 @@
           WHITEPREAKER
         </h1>
         <p class="text-[10px] font-mono tracking-widest text-blue-400/80 uppercase">
-          COGNITIVE NEURAL DIALOGUE CORE // PROTO V1.0.0
+          COGNITIVE NEURAL DIALOGUE CORE // PROTO V2.0.0
         </p>
       </div>
     </div>
 
-    <!-- Live Parameters Status Panel -->
-    <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
+    <!-- Autonomous Mode Switch & Status HUD -->
+    <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-mono">
+
+      <!-- Autonomous Mode Toggle Button -->
+      <button id="btnAutonomous"
+        class="cyber-btn border border-pink-600 bg-pink-950/20 text-pink-500 hover:bg-pink-950/60 px-4 py-1.5 rounded flex items-center gap-2 font-bold transition">
+        <span id="autoIndicator" class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-pink-500"></span>
+        </span>
+        <span id="autoText">AUTONOMOUS CYCLE: OFF</span>
+      </button>
+
       <div class="flex items-center gap-2 bg-slate-900/60 border border-blue-900/40 px-3 py-1.5 rounded">
         <span class="text-gray-500">OPERATOR:</span>
         <span class="text-white font-bold" id="userNameDisplay">SEEKER</span>
@@ -48,25 +59,16 @@
         <span class="text-gray-500">NEURAL TEMP:</span>
         <span class="text-pink-500 font-bold" id="brainTemp">36.5 °C</span>
       </div>
-
-      <div class="hidden sm:flex items-center gap-2 bg-slate-900/60 border border-blue-900/40 px-3 py-1.5 rounded">
-        <span class="text-gray-500">SPEECH:</span>
-        <span class="text-green-400 font-bold flex items-center gap-1">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-          </span>
-          ONLINE
-        </span>
-      </div>
     </div>
   </header>
 
   <!-- MAIN CONTAINER: Splitscreen Layout -->
   <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
 
-    <!-- LEFT SIDE: Interactive Neural Network System (lg:col-span-7) -->
+    <!-- LEFT SIDE: Interactive Neural Network System & Reasoning Chain (lg:col-span-7) -->
     <section class="lg:col-span-7 flex flex-col gap-4">
+
+      <!-- Canvas Panel -->
       <div class="cyber-panel rounded-lg flex-1 flex flex-col min-h-[400px]">
         <!-- Title bar -->
         <div class="bg-slate-950/60 border-b border-blue-900/40 px-4 py-3 flex justify-between items-center">
@@ -128,6 +130,36 @@
           </div>
         </div>
       </div>
+
+      <!-- Real-Time Chain of Thought Visualization -->
+      <div class="cyber-panel rounded-lg p-4 flex flex-col min-h-[170px]">
+        <div class="flex items-center gap-2 text-xs font-bold tracking-wider text-pink-400 mb-3 font-mono border-b border-blue-900/20 pb-2">
+          <i data-lucide="split" class="w-4 h-4"></i>
+          <span>COGNITIVE CHAIN OF THOUGHT (REASONING LOG)</span>
+        </div>
+        <div id="thoughtChainStream" class="flex-1 grid grid-cols-1 md:grid-cols-4 gap-2 text-xs font-mono">
+          <!-- Step 1 -->
+          <div class="bg-slate-950/60 p-2 border border-blue-900/30 rounded flex flex-col gap-1">
+            <span class="text-[9px] text-pink-500 font-bold uppercase">STAGE 1 // INTENT</span>
+            <span class="text-[10px] text-gray-400 leading-tight" id="thoughtStep1">Deconstructing sequence constraints and target coefficients.</span>
+          </div>
+          <!-- Step 2 -->
+          <div class="bg-slate-950/60 p-2 border border-blue-900/30 rounded flex flex-col gap-1">
+            <span class="text-[9px] text-cyan-400 font-bold uppercase">STAGE 2 // RECALL</span>
+            <span class="text-[10px] text-gray-400 leading-tight" id="thoughtStep2">Accessing local registers and short term dialogue history.</span>
+          </div>
+          <!-- Step 3 -->
+          <div class="bg-slate-950/60 p-2 border border-blue-900/30 rounded flex flex-col gap-1">
+            <span class="text-[9px] text-green-400 font-bold uppercase">STAGE 3 // CALIBRATE</span>
+            <span class="text-[10px] text-gray-400 leading-tight" id="thoughtStep3">Tuning parameters to optimize response quality vector.</span>
+          </div>
+          <!-- Step 4 -->
+          <div class="bg-slate-950/60 p-2 border border-blue-900/30 rounded flex flex-col gap-1">
+            <span class="text-[9px] text-yellow-500 font-bold uppercase">STAGE 4 // SYNTHESIZE</span>
+            <span class="text-[10px] text-gray-400 leading-tight" id="thoughtStep4">Compiling recursive grammar sentences and voice feedback.</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- RIGHT SIDE: Dialogue & Neural State HUD (lg:col-span-5) -->
@@ -150,7 +182,7 @@
 
         <!-- Dialogue scrolling stream -->
         <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-4 max-h-[500px]">
-          <!-- System Welcome Message -->
+          <!-- Messages populate here -->
         </div>
 
         <!-- Typing/Analyzing Indicator (Hidden by default) -->
@@ -161,6 +193,14 @@
             <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-delay-200"></span>
           </span>
           <span>WHITEPREAKER IS FIRING COGNITIVE SYNAPSES...</span>
+        </div>
+
+        <!-- Constraint/Directive Status HUD -->
+        <div id="directivesHUD" class="px-4 py-1.5 bg-slate-950 border-t border-blue-900/20 flex flex-wrap gap-2 text-[10px] font-mono text-gray-400 items-center">
+          <span class="text-[9px] text-gray-500 uppercase tracking-widest font-black">CONTROLLER Directives:</span>
+          <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-blue-900/30 text-cyan-400">TONE: <span id="hudStyle">DEFAULT</span></span>
+          <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-blue-900/30 text-pink-400">FORMAT: <span id="hudFormat">DEFAULT</span></span>
+          <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-blue-900/30 text-green-400">TOPIC: <span id="hudTopic">GENERAL</span></span>
         </div>
 
         <!-- Chat Input Form & Speech Microphone -->

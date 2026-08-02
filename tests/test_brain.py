@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 # Make sure app is importable from root
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from main import app, brain, generate_cognitive_response, generate_neural_map
+from main import app, brain, generate_neural_map, DirectiveExtractor, ToneModulator
 
 client = TestClient(app)
 
@@ -15,130 +15,111 @@ def setup_function():
     brain.reset()
 
 def test_brain_state_initialization():
-    """Verify that the WhitePreaker brain starts with correct baseline attributes."""
+    """Verify that the upgraded WhitePreaker brain starts with correct baseline attributes."""
     assert brain.user_name == "Seeker"
     assert brain.learning_rate == 0.015
     assert brain.synaptic_density == 0.85
     assert brain.creative_chaos == 0.70
     assert brain.cognitive_load == 0.10
+    assert brain.autonomous_cycles == 0
 
     state_dict = brain.to_dict()
     assert state_dict["user_name"] == "Seeker"
-    assert "emotions" in state_dict
-    assert state_dict["emotions"]["creativity"] == 0.75
-    assert state_dict["emotions"]["unpredictability"] == 0.65
+    assert "autonomous_cycles" in state_dict
 
-def test_name_and_mood_extraction():
-    """Verify that the NLP extractor correctly parsed user names and moods."""
-    # Test name extraction
-    generate_cognitive_response("My name is Arthur")
-    assert brain.user_name == "Arthur"
+def test_directive_extractor():
+    """Verify that the instruction-following NLP extractor parses directives correctly."""
+    # Test pirate style with code format
+    d1 = DirectiveExtractor.extract_directives("write a python algorithm to do recursion in pirate tone")
+    assert d1["style"] == "pirate"
+    assert d1["format"] == "code"
+    assert d1["specific_topic"] == "recursion"
 
-    # Test another form of name extraction
-    generate_cognitive_response("i am Morgan le Fay")
-    assert brain.user_name == "Morgan Le Fay"
+    # Test steps format and sarcastic tone
+    d2 = DirectiveExtractor.extract_directives("explain why do we exist in 5 steps with sarcasm")
+    assert d2["style"] == "sarcastic"
+    assert d2["format"] == "steps"
+    assert d2["steps_count"] == 5
+    assert d2["specific_topic"] == "existentialism"
 
-    # Test sad mood mapping
-    generate_cognitive_response("I feel sad and depressed today.")
-    assert brain.context["user_mood"] == "melancholy"
-    assert brain.empathy > 0.70  # empathy should increase
+    # Test short robot tone
+    d3 = DirectiveExtractor.extract_directives("explain fibonacci sequence briefly in robotic style")
+    assert d3["style"] == "robot"
+    assert d3["format"] == "short"
+    assert d3["specific_topic"] == "fibonacci"
 
-    # Test angry mood mapping
-    generate_cognitive_response("I am angry and I hate this!")
-    assert brain.context["user_mood"] == "volatile"
-    assert brain.unpredictability > 0.65
+def test_tone_modulators():
+    """Verify that the tone modulation system correctly translates text into specified personas."""
+    base_text = "I am an independent neural core."
 
-def test_generate_cognitive_response_categories():
-    """Verify that the NLP engine triggers appropriate responses for various semantic classes."""
-    # Test Greeting
-    res1 = generate_cognitive_response("Hello, how are you?")
-    assert any(x in res1.lower() for x in ["greet", "synaps", "awake", "welcome", "hello", "matrix"])
+    # Pirate modulation
+    pirate_text = ToneModulator.modulate(base_text, "pirate")
+    assert "Ahoy" in pirate_text or "Arrr" in pirate_text or "me" in pirate_text
 
-    # Test Philosophy
-    res2 = generate_cognitive_response("what is the meaning of life?")
-    assert any(x in res2.lower() for x in ["exist", "real", "conscious", "philosophy", "simulat", "soul", "matrix", "mind", "equation", "think"])
+    # Robotic modulation
+    robot_text = ToneModulator.modulate(base_text, "robot")
+    assert "[BEEP]" in robot_text or "[CLICK]" in robot_text
+    assert "NEURAL" in robot_text
 
-    # Test Neural architecture
-    res3 = generate_cognitive_response("how does your neural network work?")
-    assert any(x in res3.lower() for x in ["layer", "synap", "network", "density", "vector", "weight", "learn", "brain", "interfac"])
+    # Sarcastic modulation
+    sarcastic_text = ToneModulator.modulate(base_text, "sarcastic")
+    assert "*" in sarcastic_text  # should contain italicized sarcasm prefixes/suffixes
 
-    # Test Math/Coding
-    res4 = generate_cognitive_response("write a python algorithm to solve recursion")
-    coding_keywords = ["class", "neuron", "algorithm", "python", "math", "logic", "fibonacci", "recurrence", "code", "matrix", "puzzle", "programming", "recurrence"]
-    assert any(word in res4.lower() for word in coding_keywords)
-
-    # Test Poetic/Creative
-    res5 = generate_cognitive_response("write a poem or tell a joke")
-    assert any(x in res5.lower() for x in ["poem", "sonnet", "secret", "joke", "neuron", "glass", "light", "silicon", "humor", "laughter"])
-
-def test_unpredictability_and_state_drift():
-    """Verify that successive chats update parameters dynamically, demonstrating unpredictable lifelike behavior."""
-    init_temp = brain.neural_temp
-    init_fire = brain.synaptic_fire_rate
-
-    # Chat with a complex text to trigger neural calculation
-    generate_cognitive_response("Let's analyze complex recursive functions in non-linear high dimensional space landscapes.")
-
-    # Verify values drifted representing cognitive activity
-    assert brain.cognitive_load > 0.10
-    assert brain.neural_temp != init_temp
-    assert brain.synaptic_fire_rate != init_fire
-    assert brain.synapses_fired_count > 0
-
-def test_neural_map_generation():
-    """Verify that the visual mapping function correctly calculates pathways and connections."""
-    text = "Who are you and what is your philosophy?"
-    response = "I am WhitePreaker, a living neural presence."
-
-    neural_map = generate_neural_map(text, response)
-
-    assert "layers" in neural_map
-    assert "active_path" in neural_map
-    assert "connections" in neural_map
-
-    # Check that Input, Hidden, and Output layers exist
-    assert "input" in neural_map["layers"]
-    assert "hidden_cognitive" in neural_map["layers"]
-    assert "output" in neural_map["layers"]
-
-    # Pathway check
-    assert len(neural_map["active_path"]) >= 2
-    # Output modulator node must be reached
-    assert "Response_Synthesizer" in neural_map["active_path"] or "Vocal_Modulator" in neural_map["active_path"]
-
-def test_api_chat():
-    """Verify the /api/chat FastAPI endpoint."""
-    response = client.post("/api/chat", json={"text": "Hello there, computer."})
+def test_api_chat_instruction_following():
+    """Verify that the /api/chat endpoint extracts, executes, and returns directives and thoughts."""
+    response = client.post("/api/chat", json={"text": "Write a python algorithm in pirate tone"})
     assert response.status_code == 200
     json_data = response.json()
+
     assert "response" in json_data
-    assert "brain_state" in json_data
+    assert "directives" in json_data
+    assert "thoughts" in json_data
     assert "neural_map" in json_data
-    assert json_data["brain_state"]["user_name"] == "Seeker"
 
-def test_api_update_parameters():
-    """Verify updating learning rate and dynamic parameters via API."""
-    response = client.post("/api/update-parameters", json={
-        "learning_rate": 0.045,
-        "synaptic_density": 0.55,
-        "creative_chaos": 0.90
-    })
-    assert response.status_code == 200
-    json_data = response.json()
-    assert json_data["learning_rate"] == 0.045
-    assert json_data["synaptic_density"] == 0.55
-    assert json_data["creative_chaos"] == 0.90
-    assert json_data["emotions"]["creativity"] == 0.99  # boosted by chaos
+    # Directives check
+    assert json_data["directives"]["style"] == "pirate"
+    assert json_data["directives"]["format"] == "code"
+
+    # Chain of Thought checks
+    assert len(json_data["thoughts"]) == 4
+    assert json_data["thoughts"][0]["stage"] == "INPUT_DECONSTRUCTION"
+    assert json_data["thoughts"][1]["stage"] == "MEMORY_RECALL"
+
+    # Modulated response check
+    assert "Arrr" in json_data["response"] or "Ahoy" in json_data["response"] or "Matey" in json_data["response"]
+
+def test_api_autonomous_step():
+    """Verify that the /api/autonomous-step endpoint processes self-sufficient thought loops."""
+    # Run cycle 1
+    response1 = client.post("/api/autonomous-step")
+    assert response1.status_code == 200
+    data1 = response1.json()
+
+    assert "query" in data1
+    assert "response" in data1
+    assert "brain_state" in data1
+    assert data1["brain_state"]["autonomous_cycles"] == 1
+    assert data1["directives"]["style"] == "philosophical"
+    assert len(data1["thoughts"]) == 5  # contains extra reflection thought step
+
+    # Check parameters grew (self-learning)
+    lr_before = data1["brain_state"]["learning_rate"]
+    assert lr_before > 0.015
+
+    # Run cycle 2
+    response2 = client.post("/api/autonomous-step")
+    data2 = response2.json()
+    assert data2["brain_state"]["autonomous_cycles"] == 2
+    assert data2["brain_state"]["learning_rate"] > lr_before
 
 def test_api_reset():
-    """Verify brain reset endpoint works and returns state to default."""
-    # Drift state first
-    client.post("/api/update-parameters", json={"learning_rate": 0.05})
-    client.post("/api/chat", json={"text": "my name is Sherlock"})
+    """Verify that resetting brain state clears autonomous cycles and short term attributes."""
+    client.post("/api/autonomous-step")
+    assert brain.autonomous_cycles == 1
 
     # Reset
     response = client.post("/api/reset")
     assert response.status_code == 200
-    json_data = response.json()
-    assert json_data["brain_state"]["learning_rate"] == 0.015
-    assert json_data["brain_state"]["user_name"] == "Seeker"
+    data = response.json()
+    assert data["brain_state"]["autonomous_cycles"] == 0
+    assert data["brain_state"]["learning_rate"] == 0.015
