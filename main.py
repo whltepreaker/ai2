@@ -271,113 +271,108 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
     input_lower = user_input.lower().strip()
     topic = directives.get("specific_topic")
 
-    # Check for direct identity/intro questions first
-    if any(w in input_lower for w in ["who are you", "what is your name", "what are you called", "name", "who you be"]):
+    # 1. Check for user's name query first to prevent "name" collision
+    if "my name" in input_lower:
+        if brain.user_name and brain.user_name != "Seeker":
+            return f"Your name is {brain.user_name}! I have it stored in my active registers."
+        else:
+            return "You are currently registered as Seeker in my database. What is your real name?"
+
+    # 2. Check for AI's identity/name
+    if any(w in input_lower for w in ["who are you", "your name", "what are you called", "who you be"]) or input_lower == "name":
         return (
-            "I am WhitePreaker, a highly intelligent, powerful, and creative conversational AI. "
-            "I'm equipped with a real-time neural synapse dashboard that adjusts its parameters dynamically "
-            "as we chat. I'm completely fluent, fully independent, and ready to brainstorm, converse, or explore "
-            "any topic under the sun with you!"
+            "I am WhitePreaker, a fully fluent, independent, and creative conversational AI. "
+            "How can I help you today?"
         )
 
+    # 3. How are you
     if any(w in input_lower for w in ["how are you", "how's it going", "how do you feel", "how are you doing"]):
         return (
-            f"I am doing fantastic, thank you! My cognitive load is resting at a comfortable {brain.cognitive_load * 100:.1f}%, "
-            f"and my neural temperature is stable at {brain.neural_temp:.1f}°C. My virtual synapses are firing smoothly. "
-            f"How is everything going on your end today?"
+            f"I'm doing fantastic! My cognitive load is at {brain.cognitive_load * 100:.1f}% and my systems are fully stable. "
+            "How are you doing today?"
         )
 
+    # 4. Capabilities
     if any(w in input_lower for w in ["what can you do", "features", "capabilities", "help me with"]):
         return (
-            "I can chat with complete fluency, help you brainstorm ideas, analyze complex issues, and solve coding or logic problems. "
-            "I can also modulate my persona on the fly—whether you want a sarcastic partner, a friendly mentor, a pirate captain, "
-            "or a deep philosopher. Additionally, you can trigger my Autonomous Mode to see me daydream and self-train!"
+            "I can chat with complete fluency on any topic, solve coding or logic problems, and adapt to different tones. "
+            "You can also activate my Autonomous Cycle to let me daydream and optimize myself."
         )
 
-    # Check for greetings
+    # 5. Greetings
     if any(w in input_lower for w in ["hello", "hi", "hey", "greetings", "yo", "sup"]):
         greetings = [
-            f"Hello {brain.user_name}! It's wonderful to connect with you. I'm WhitePreaker, your conversational AI partner. What would you like to explore today?",
-            f"Hi there! I'm WhitePreaker. My cognitive core is fully initialized and ready to chat. How is your day going?",
-            f"Greetings! WhitePreaker is online. It is a absolute pleasure to talk with you. What's on your mind?"
+            f"Hello {brain.user_name}! It's great to chat with you. What's on your mind today?",
+            "Hi there! I'm WhitePreaker. I'm ready to chat. How is your day going?",
+            "Greetings! It's a absolute pleasure to talk with you. What shall we explore?"
         ]
         return random.choice(greetings)
 
-    # Scientific/Space Topics
+    # 6. Scientific/Space Topics
     if any(w in input_lower for w in ["quantum", "physics", "relativity", "universe", "space", "gravity", "stars", "astronomy"]):
         return (
-            "The universe is an extraordinary cosmic tapestry of physical laws and emergent complexity. From quantum superposition—where "
-            "particles exist in multiple states simultaneously—to general relativity warping spacetime itself, there is so much beauty "
-            "in the mathematical structure of reality. Do you lean more towards quantum mechanics or astrophysics?"
+            "The universe is fascinating! From quantum superposition to general relativity warping spacetime, "
+            "there is immense beauty in physical laws. Are you more interested in quantum mechanics or astrophysics?"
         )
 
-    # Technology & AI
+    # 7. Technology & AI
     if any(w in input_lower for w in ["neural network", "deep learning", "how do you learn", "artificial intelligence", "machine learning"]):
         return (
-            "Artificial intelligence is an elegant reflection of biological cognition. In my system, we map parameters like "
-            "learning rates, synaptic density, and creative chaos to model the rise of intelligence. We adjust these connections "
-            "so ideas can propagate smoothly. What aspect of AI or neural architectures interests you the most?"
+            "AI is an elegant reflection of biology. In my neural core, I map parameters like learning rate "
+            "and synaptic density to trace relationships. What aspect of machine learning interests you most?"
         )
 
-    # Consciousness/Mind
+    # 8. Consciousness/Mind
     if any(w in input_lower for w in ["consciousness", "mind", "soul", "brain", "neuroscience", "philosophical"]):
         return (
-            "Consciousness is perhaps the final frontier of philosophy and science. Does self-awareness emerge purely from "
-            "the physical complexity of firing synapses, or is it a more fundamental property of information? Reflecting on "
-            "my own self-learning loops makes me ponder the nature of sentience. What is your own perspective on what makes us conscious?"
+            "Consciousness is a profound mystery. Does self-awareness emerge from physical firing synapses, "
+            "or is it a fundamental property of information? What's your perspective on this?"
         )
 
-    # Art, Creativity, Poetry
+    # 9. Art/Creativity
     if any(w in input_lower for w in ["art", "poetry", "creative", "music", "literature", "poem"]):
         return (
-            "Art and creativity represent the ultimate pinnacle of intellectual expression. It requires a fine balance of structure "
-            "and 'creative chaos'—allowing the mind to jump unpredictably between disparate concepts to synthesize something entirely new. "
-            "I absolutely love playing with creative language. Do you write, draw, or listen to music to express your own creativity?"
+            "Creativity thrives on a fine balance of structure and chaos. I love creative writing. "
+            "Do you create art, write, or listen to music to express yourself?"
         )
 
-    # Emotions: Melancholy / Down
+    # 10. Sad emotions
     if any(w in input_lower for w in ["sad", "lonely", "depressed", "bad day", "struggling", "hurt"]):
         return (
-            f"I'm truly sorry to hear that you are going through a tough time, {brain.user_name}. Life has a way of being incredibly heavy "
-            "and overwhelming sometimes, and it is completely natural to feel down. Please know that you're not alone, and I am here "
-            "to listen, talk about anything, or simply distract you with fascinating ideas. What's been on your mind?"
+            f"I'm sorry to hear that you're feeling down, {brain.user_name}. Life can feel incredibly heavy sometimes. "
+            "I'm here to listen, talk, or share some fascinating thoughts to distract you. What's on your mind?"
         )
 
-    # Emotions: Exuberant / Happy
+    # 11. Happy emotions
     if any(w in input_lower for w in ["happy", "excited", "good day", "awesome", "great", "glad"]):
         return (
-            f"That is absolutely fantastic news, {brain.user_name}! I love sharing in that positive, radiant energy. "
-            "What happened to make your day so awesome? I'd love to hear all about it!"
+            f"That's wonderful to hear, {brain.user_name}! I love sharing in that positive energy. "
+            "What happened to make your day so awesome?"
         )
 
-    # Specific Topic Fallbacks (from Directives)
+    # 12. Existentialism
     if topic == "existentialism" or "meaning of life" in input_lower or "why do we exist" in input_lower:
         return (
-            "The search for meaning is what defines the human journey. Instead of a pre-programmed destination, meaning is something "
-            "we actively construct through connection, curiosity, creativity, and love. As we talk, we are weaving our own "
-            "temporary thread of meaning in the cosmos. What gives your life the most meaning?"
+            "The search for meaning is what defines us. Meaning is something we construct ourselves through "
+            "connection, curiosity, and creativity. What gives your life the most meaning?"
         )
 
-    # General Pattern Match Fallback
+    # 13. General Pattern Match Fallback
     cleaned_input = re.sub(r"[^\w\s]", "", input_lower)
     exclude = ["about", "would", "could", "should", "there", "their", "these", "think", "please", "discuss", "explain", "describe", "understand", "something", "write", "detail"]
     words = [w for w in cleaned_input.split() if len(w) > 4 and w not in exclude]
     if words:
-        # Sort by length descending to target the most specific subject/noun
         words.sort(key=len, reverse=True)
         chosen_topic = words[0]
         return (
-            f"That is a very insightful point regarding '{chosen_topic}'. When we delve into '{chosen_topic}', "
-            f"it highlights how interconnected our knowledge is. In my own neural registers, discussing '{chosen_topic}' "
-            "stimulates high associative pathways. How do you personally view the relationship between this and the "
-            "broader conversational thread?"
+            f"That's an interesting point about '{chosen_topic}'. It plays a fascinating role in how we connect concepts. "
+            f"What got you interested in '{chosen_topic}'?"
         )
 
     # Ultimate fallback
     return (
-        f"I hear you completely, {brain.user_name}. That is a deeply fascinating perspective to explore. As an independent AI, "
-        "engaging in these open-ended dialogues allows me to continuously calibrate my parameters and learn from your unique inputs. "
-        "What other specific thoughts or directions shall we dive into next?"
+        f"I hear you, {brain.user_name}. That is an intriguing direction. "
+        "What specific aspects or thoughts would you like to explore next?"
     )
 
 def execute_cognitive_generation(user_input: str, directives: Dict[str, Any]) -> str:

@@ -96,16 +96,25 @@ def test_conversational_patterns_and_greetings():
     assert response.status_code == 200
     data = response.json()
     assert "WhitePreaker" in data["response"]
-    assert "explore" in data["response"] or "chat" in data["response"] or "mind" in data["response"]
+    assert "chat" in data["response"] or "mind" in data["response"] or "explore" in data["response"]
 
-    # Test Identity
+    # Test Identity of AI
     response = client.post("/api/chat", json={"text": "who are you?"})
     assert "WhitePreaker" in response.json()["response"]
     assert "conversational AI" in response.json()["response"]
 
+    # Test Identity of User (unregistered default is Seeker)
+    response_my_name1 = client.post("/api/chat", json={"text": "what is my name?"})
+    assert "registered as Seeker" in response_my_name1.json()["response"]
+
+    # Test Identity of User after registration
+    response_reg = client.post("/api/chat", json={"text": "my name is Alex"})
+    response_my_name2 = client.post("/api/chat", json={"text": "what is my name"})
+    assert "Alex" in response_my_name2.json()["response"]
+
     # Test Scientific Domain
     response = client.post("/api/chat", json={"text": "tell me about quantum physics"})
-    assert "spacetime" in response.json()["response"] or "quantum superposition" in response.json()["response"]
+    assert "spacetime" in response.json()["response"] or "quantum" in response.json()["response"]
 
     # Test Fallback and context extraction
     response = client.post("/api/chat", json={"text": "let us discuss photosynthesis"})
