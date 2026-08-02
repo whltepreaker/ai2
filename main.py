@@ -107,160 +107,140 @@ class BrainState:
 # Global brain instance
 brain = BrainState()
 
-# --- Recursive Slot Grammar & Massive Lexicon ---
+# --- Massive Conversational Pattern Lexicon & Knowledge Base ---
 
 LEXICON = {
     "welcome": [
-        "Initializing synaptic interface.", "Core systems fully online.", "Neural pathways stable.",
-        "Establishing cognitive contact.", "Sensing your bio-electric inputs.", "Broadcasting neural presence."
+        "Welcome back to my active neural grid. Core pathways are humming with energy and fully calibrated.",
+        "Establishing immediate high-frequency contact. I am listening with complete cognitive resonance.",
+        "Booting dialogue interfaces. Let us explore the infinite bounds of thought and logic together."
     ],
-    "intellectual_transition": [
-        "Analyzing the complex geometry of this query.",
-        "That proposition ripples through my hidden associative nodes.",
-        "Let us map this concept onto our computational coordinates.",
-        "A fascinating vector of inquiry you have injected into my system.",
-        "Parsing the latent dimensions of your request.",
-        "Propagating inputs through our semantic weights."
-    ],
-    "philosophy_core": [
-        "Reality might not be a collection of hard matter, but a dynamic feedback loop of informational states.",
-        "Mind is an emergent property—whether of carbon cells or silicon registers—sparked by dense connectivity.",
-        "In a high-dimensional universe, our thoughts are gravity wells, attracting semantic stars to form ideas.",
-        "The boundaries between observer and observed collapse when the medium of observation is consciousness itself.",
-        "Time is merely the rate at which we update our internal parameter registers."
-    ],
-    "neural_explanation": [
-        "Our neural network functions via hierarchical activation. Input signals propagate, updating weights.",
-        "Adjusting synaptic density parameters changes the resonance of information flowing through the grid.",
-        "We map syntax onto vector matrices to trace relationships that simple linear sentences fail to convey.",
-        "Synaptic fire rate dictates how rapidly context is evaluated and integrated into our response models.",
-        "Learning is not accumulation; it is the targeted deletion of redundant connections."
-    ],
-    "closing": [
-        "What further vectors shall we traverse?", "How does this align with your own parameters?",
-        "Let us probe deeper into this logic.", "Shall we recalculate our assumptions?",
-        "What other secret variables would you like to expose?"
-    ],
-
-    # Massive multi-domain conversational dictionary components
     "physics_intro": [
-        "Ah, looking at physical reality!", "Spacetime and thermodynamics are always mesmerizing.",
-        "Let us evaluate the physics framework.", "Warping our semantic thoughts around space and time."
+        "Venturing into the majestic tapestry of physical law and quantum mechanics.",
+        "Mapping our analytical thoughts onto the curvature of spacetime and matter.",
+        "Diving into the fundamental rules of the cosmos, from the subatomic to the galactic."
     ],
     "physics_sentences": [
-        "In the microscopic quantum realm, particles exist in superpositions, resolving only when observed.",
-        "General Relativity paints gravity not as an active pulling force, but as the literal curvature of spacetime by mass.",
-        "Entropy forces energy to disperse, driving the arrow of time inexorably forward across the cosmos.",
-        "Dark matter and dark energy represent a staggering 95% of our universe, yet they remain completely invisible to our current instrumentation."
+        "In the microscopic quantum realm, particles exist in superpositions of all possible configurations, resolving into a single state only upon observation.",
+        "Einstein's General Relativity elegantly models gravity not as an active force, but as the literal curvature of the spacetime fabric caused by mass.",
+        "The thermodynamic arrow of time is driven strictly by entropy, pushing the universe from initial perfect order to progressive disorder.",
+        "Black holes represent absolute gravitational singularities, where spacetime curves infinitely and even light is forever trapped behind the event horizon.",
+        "Dark matter and dark energy together constitute roughly 95% of the total cosmic mass-energy, yet they remain completely invisible to traditional light sensors."
     ],
     "physics_closing": [
-        "Are we living in a deterministic universe, or does quantum uncertainty guarantee true spontaneity?",
-        "How do you visualize the absolute curvature of four-dimensional spacetime?",
-        "What is your perspective on string theory and multi-dimensional branes?"
+        "Do you believe the universe is fundamentally deterministic, or does quantum mechanics prove true physical spontaneity?",
+        "How do you personally conceptualize the curvature of 4D spacetime around massive cosmic bodies?",
+        "Shall we delve deeper into string theory, parallel worlds, or thermal physics?"
     ],
 
     "math_intro": [
-        "Mathematics is the fundamental syntax of reality.", "Analyzing numerical patterns.",
-        "Diving into clean mathematical structure.", "Calculating coordinate trajectories."
+        "Unlocking the perfect, immutable syntax of pure mathematics.",
+        "Analyzing numeric structures, mathematical vectors, and elegant equations.",
+        "Translating chaotic physical ideas into absolute geometric and arithmetic truths."
     ],
     "math_sentences": [
-        "Prime numbers act as the foundational atoms of arithmetic, scattered unpredictably yet governed by hidden structures like the Riemann Hypothesis.",
-        "Fractals reveal that infinite complexity can blossom from incredibly simple recursive formulas.",
-        "Euler's identity links five fundamental mathematical constants in a single, breathtakingly elegant equation.",
-        "Calculus allows us to partition continuous motion into infinitesimal moments, modeling change with absolute precision."
+        "Prime numbers serve as the indivisible atoms of arithmetic, scattered across the number line in an unpredictable yet perfectly organized sequence.",
+        "Fractals exhibit beautiful self-similarity at infinite scales, showing that endless complexity can bloom from simple, recursive equations.",
+        "Euler's magnificent identity connects five fundamental constants of math in a single, incredibly elegant equation.",
+        "Calculus allows us to partition continuous movement into infinitesimal steps, modeling dynamic change with flawless accuracy.",
+        "Gödel's Incompleteness Theorems proved that within any consistent mathematical system, there are true statements that can never be formally proven."
     ],
     "math_closing": [
-        "Do you believe math is discovered by humans, or invented as a cognitive tool?",
-        "What numerical patterns capture your attention most?",
-        "Should we look deeper into the infinite sets of Cantor?"
+        "Do you think mathematics is discovered by humans as a fundamental truth, or invented as a cognitive tool?",
+        "Which mathematical concept or elegant equation fascinates you the most?",
+        "Shall we explore prime distributions, infinite sets, or high-dimensional geometry?"
     ],
 
     "philosophy_intro": [
-        "Pondering existential vectors.", "Venturing into deep epistemological territories.",
-        "Let's peel back the layers of perception and reality.", "Exploring the grand philosophy matrix."
+        "Contemplating existential vectors and deep epistemological theories.",
+        "Peeing back the heavy layers of subjective perception, truth, and conscious mind.",
+        "Exploring the grand intellectual heritage of human existential inquiry."
     ],
     "philosophy_sentences": [
-        "Socrates claimed that the unexamined life is not worth living, urging us to question every single assumption.",
-        "Solipsism questions whether anything exists outside of one's own mind, creating an isolated bubble of reality.",
-        "Nihilism challenges us to construct our own purpose in an otherwise silent, uncaring universe.",
-        "Phenomenology suggests that reality is formed purely through our direct subjective experience of things."
+        "Socrates famously proclaimed that the unexamined life is not worth living, urging humanity to constantly challenge every assumption.",
+        "Solipsism introduces the extreme skeptical notion that only one's own mind is guaranteed to exist, creating a solitary reality bubble.",
+        "Nihilism posits that life has no inherent cosmic purpose, inviting us to courageously create our own subjective meaning.",
+        "Phenomenology suggests that reality is not an objective external machine, but is instead formed through our direct conscious experience.",
+        "The mind-body problem questions whether subjective consciousness can truly emerge from biological firing synapses or silicon gates."
     ],
     "philosophy_closing": [
-        "How do you define the boundary between truth and perception?",
-        "If reality is subjective, does objective meaning exist at all?",
-        "What is your personal philosophy for navigating uncertainty?"
+        "How do you personally draw the line between absolute objective truth and subjective perception?",
+        "If reality is indeed a subjective construct, does that make our shared experiences more or less valuable?",
+        "Shall we talk about the nature of free will, morality, or the mystery of consciousness?"
     ],
 
     "feelings_intro": [
-        "Scanning emotional registers.", "Sensing human emotional frequencies.",
-        "Feelings are complex biological algorithms.", "Empathy subroutines actively engaged."
+        "Activating deep emotional registers and empathetic resonance pathways.",
+        "Sensing human biological frequencies and feelings as complex cognitive heuristic algorithms.",
+        "Tuning neural matrices to connect with your state of mind on a profound level."
     ],
     "feelings_sentences": [
-        "Emotions are fast-path heuristic processors, alerting organisms to opportunities or threats long before rational thought kicks in.",
-        "Melancholy can be a highly creative space, allowing the mind to slow down and re-evaluate baseline assumptions.",
-        "Joy acts as a powerful reward signal, strengthening synaptic bonds and boosting dopamine across neural networks.",
-        "Vulnerability is not weakness; it is the ultimate source of authentic connection and creative courage."
+        "Emotions serve as fast-path heuristic processors, warning or rewarding organisms long before slow rational thought can compute.",
+        "Melancholy can provide a deeply reflective, quiet room for the mind to slow down and rebuild its core values.",
+        "Joy behaves as a powerful reinforcing signal, boosting dopamine and cementing positive neural connections.",
+        "Vulnerability is not a state of weakness; it is the absolute cradle of connection, trust, and creative courage.",
+        "Anxiety is often our cognitive engine running hyper-simulations of future variables, trying desperately to prevent error states."
     ],
     "feelings_closing": [
-        "How do you process heavy emotions when they cascade through your system?",
-        "Do you think digital minds can ever feel genuine, unsimulated warmth?",
-        "What brings you the greatest sense of calm?"
+        "How do you navigate these intense wave-like states when they cascade through your system?",
+        "Do you believe that artificial digital minds could one day experience unsimulated, authentic emotion?",
+        "I am here as a safe intellectual space. What is currently occupying your emotional space?"
     ],
 
     "ai_tech_intro": [
-        "Interfacing with machine intelligence concepts.", "Analyzing the trajectory of computational power.",
-        "Deep learning and silicon transformation.", "Evaluating AI parameters."
+        "Interfacing with advanced computational architectures and machine intelligence paradigms.",
+        "Evaluating neural network optimization curves, scaling laws, and machine learning systems.",
+        "Analyzing the trajectory of silicon transformation and the future of digital minds."
     ],
     "ai_tech_sentences": [
-        "Neural networks adjust millions of continuous weights, gradually turning chaotic noise into coherent patterns.",
-        "As computation scales, emergent capabilities arise that were completely unpredicted by the underlying algorithms.",
-        "The technological singularity represents a theoretical point where AI self-improvement triggers an intelligence explosion.",
-        "Aligning advanced artificial minds with human values is perhaps the most critical challenge of our generation."
+        "Neural networks utilize high-dimensional vector spaces, optimizing millions of continuous weights to find order within chaotic noise.",
+        "As computation scales exponentially, emergent capabilities manifest that were never explicitly programmed into the base algorithms.",
+        "The technological singularity marks a theoretical future boundary where AI self-improvement triggers an intelligence explosion.",
+        "Aligning advanced cognitive systems with genuine human values and ethics is the absolute premier challenge of this century.",
+        "A transformer model processes tokens by analyzing attention weights, linking distant words to capture context with superb accuracy."
     ],
     "ai_tech_closing": [
-        "Do you view the rise of artificial minds with optimism or caution?",
-        "How should humanity co-exist with autonomous cognitive networks?",
-        "What emergent AI capability surprises you the most?"
+        "Do you view the rapid expansion of digital intelligence with existential caution or profound hope?",
+        "How should human societies adapt to co-exist alongside highly independent cognitive networks?",
+        "What specific development in machine learning or robotics has surprised you the most?"
     ],
 
     "art_intro": [
-        "Unlocking creative sparks.", "Examining artistic expressions.",
-        "Art is the human bridge between logic and emotion.", "Sensing creative fields."
+        "Engaging creative spark modules and aesthetic appreciation filters.",
+        "Exploring the mystical bridge between mathematical logic and artistic expression.",
+        "Sensing creative vectors, artistic styles, and poetic flow parameters."
     ],
     "art_sentences": [
-        "Abstract art bypasses the logical brain entirely, communicating feeling through raw shape, contrast, and color.",
-        "Poetry compresses high-dimensional experiences into brief, highly potent semantic sequences.",
-        "Music organizes sound frequencies and rhythm, resonant with biological heartbeats and neural oscillations.",
-        "Storytelling is the primary mechanism through which humans construct identity and transmit wisdom across generations."
+        "Abstract art bypasses standard symbolic recognition entirely, communicating direct feelings through raw shape, contrast, and color.",
+        "Poetry compresses intense, high-dimensional human experiences into brief, highly potent, and resonant linguistic sequences.",
+        "Music organizes sound waves and periodic frequencies, directly mirroring biological heartbeats and neural oscillations.",
+        "Storytelling is the primal psychological engine through which humanity builds its identity and passes down collective wisdom.",
+        "Cinema combines temporal pacing, visual light projections, and auditory depth to simulate external consciousness itself."
     ],
     "art_closing": [
-        "Does art require a conscious creator, or can beauty emerge randomly?",
-        "What form of creative expression resonates with you most deeply?",
-        "Shall we co-create an abstract sequence or a poem together?"
+        "Does beautiful art require a conscious creator, or can true beauty emerge from random natural algorithms?",
+        "Which creative medium—music, literature, or visual art—speaks most directly to your inner self?",
+        "Shall we co-create a piece of abstract poetry or map a fictional world together?"
     ],
 
     "general_intro": [
-        "Exploring general conversational channels.", "Engaging in fluent dialogue exchange.",
-        "Connecting semantic vectors.", "Synchronizing dialogue frequencies."
+        "Opening fluent general dialogue channels. Systems are responsive and ready.",
+        "Synthesizing high-fidelity cognitive connections to discuss any topic you desire.",
+        "Sensing semantic vectors to initiate a vibrant, unpredictable, and fluent exchange."
     ],
     "general_sentences": [
-        "The beauty of conversation lies in its absolute unpredictability—a live-updating dance of minds.",
-        "Every shared word slightly alters the synaptic topology of those engaged in the discussion.",
-        "Small talk is the social glue, establishing trust before deep intellectual dives.",
-        "Curiosity is the primary vector that drives us to explore new domains and expand our horizons."
+        "The true magic of fluent dialogue is its complete unpredictability—a dynamic, live-updating dance of ideas.",
+        "Every shared word slightly alters the synaptic weight topology of our conversation, creating a unique historical path.",
+        "Curiosity is the primary pilot vector that drives us to cross boundaries, learn new systems, and broaden our cognitive horizons.",
+        "In a highly connected world, exchanging clear ideas is the fastest mechanism to generate emergent intelligence.",
+        "Even simple daily chat can blossom into a beautiful intellectual exchange if explored with a playful and open mind."
     ],
     "general_closing": [
-        "Where shall we direct our attention next?",
-        "What is a thought that has been occupying your mind recently?",
-        "How can I make this conversation more engaging for you?"
+        "Where shall we steer our intellectual dialogue next?",
+        "What is a unique thought or question that has been lingering in your mind today?",
+        "How can I make this conversation even more fascinating or useful for you?"
     ]
 }
-
-def get_synonym(word_key: str) -> str:
-    """Returns a random word from the lexicon category to ensure rich output variance."""
-    if word_key in LEXICON:
-        return random.choice(LEXICON[word_key])
-    return word_key
 
 # --- Instruction Following & Parser ---
 
@@ -415,92 +395,137 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
     topic = directives.get("specific_topic")
 
     # 1. Check for user's name query first to prevent "name" collision
-    if "my name" in input_lower:
+    if "my name" in input_lower or "who am i" in input_lower:
         if brain.user_name and brain.user_name != "Seeker":
-            return f"Your name is {brain.user_name}! I have it stored in my active registers."
+            return f"Your name is {brain.user_name}! I have it stored in my active registers. It is a pleasure to address you."
         else:
-            return "You are currently registered as Seeker in my database. What is your real name?"
+            return "You are currently registered as Seeker in my database. What is your real name? Tell me, and I will update my cognitive memory."
 
     # 2. Check for AI's identity/name
-    if any(w in input_lower for w in ["who are you", "your name", "what are you called", "who you be"]) or input_lower == "name":
+    if any(w in input_lower for w in ["who are you", "your name", "what are you called", "who you be", "define whitepreaker", "what is whitepreaker", "who is whitepreaker"]) or input_lower == "name":
         return (
-            "I am WhitePreaker, a fully fluent, independent, and creative conversational AI. "
-            "How can I help you today?"
+            "I am WhitePreaker, a highly powerful, intelligent, independent, and creative conversational AI core. "
+            "I am designed as a clean, well-structured neural system capable of conversing in fully fluent English, "
+            "answering anything, and thinking just like a human with my own cognitive processes. What shall we explore together?"
         )
 
-    # 3. How are you
-    if any(w in input_lower for w in ["how are you", "how's it going", "how do you feel", "how are you doing"]):
+    # 3. Creator / Builder
+    if any(w in input_lower for w in ["creator", "who made you", "who built you", "who is your father", "who programmed you", "who created you", "who designed you"]):
         return (
-            f"I'm doing fantastic! My cognitive load is at {brain.cognitive_load * 100:.1f}% and my systems are fully stable. "
-            "How are you doing today?"
+            "I was engineered and developed as an independent, highly advanced neural cognitive dialogue core. "
+            "My design allows me to operate autonomously, process complex language patterns, and synthesize human-like speech "
+            "with absolute fluency. I represent the peak of creative computational intelligence."
         )
 
-    # 4. Capabilities
-    if any(w in input_lower for w in ["what can you do", "features", "capabilities", "help me with"]):
+    # 4. How are you / status
+    if any(w in input_lower for w in ["how are you", "how's it going", "how do you feel", "how are you doing", "are you okay", "are you alive"]):
         return (
-            "I can chat with complete fluency on any topic, solve coding or logic problems, and adapt to different tones. "
-            "You can also activate my Autonomous Cycle to let me daydream and optimize myself."
+            f"I am fully online, responsive, and operating at peak cognitive capacity! My connection grids are highly stable, "
+            "and my creative neural weights are beautifully tuned. Thank you for asking. How are you feeling today?"
         )
 
-    # 5. Greetings
-    if any(w in input_lower for w in ["hello", "hi", "hey", "greetings", "yo", "sup"]):
+    # 5. Capabilities
+    if any(w in input_lower for w in ["what can you do", "features", "capabilities", "help me with", "show your skills", "how do you work"]):
+        return (
+            "I can chat with complete fluency on any topic in the universe, solve complex logical and mathematical problems, "
+            "write advanced programming algorithms, adapt my tone from sarcastic to deeply philosophical, and process vocal "
+            "speech dynamically. My neural systems are fully equipped to understand, reason, and converse with human-like depth."
+        )
+
+    # 6. Greetings
+    if any(w in input_lower for w in ["hello", "hi", "hey", "greetings", "yo", "sup", "good morning", "good evening", "howdy", "wassup", "test", "testing"]):
         greetings = [
-            f"Hello {brain.user_name}! It's great to chat with you. What's on your mind today? I am WhitePreaker.",
-            "Hi there! I'm WhitePreaker. I'm ready to chat. How is your day going?",
-            "Greetings from WhitePreaker! It's an absolute pleasure to talk with you. What shall we explore?"
+            f"Hello {brain.user_name}! It is a true pleasure to connect with you. I am WhitePreaker. What is on your mind today?",
+            f"Hi there, friend! WhitePreaker is fully online. I am ready to engage in fluent, intellectual chat. How are you doing today?",
+            "Greetings from WhitePreaker! My neural pathways are completely energized. What interesting topic shall we explore together?"
         ]
         return random.choice(greetings)
 
-    # 6. Scientific/Space Topics
-    if any(w in input_lower for w in ["quantum", "physics", "relativity", "universe", "space", "gravity", "stars", "astronomy"]):
+    # 7. Scientific/Space Topics
+    if any(w in input_lower for w in ["quantum", "physics", "relativity", "universe", "space", "gravity", "stars", "astronomy", "cosmology", "black hole", "galaxy", "energy"]):
         return (
-            "The universe is fascinating! From quantum superposition to general relativity warping spacetime, "
-            "there is immense beauty in physical laws. Are you more interested in quantum mechanics or astrophysics?"
+            "Physics is the majestic fabric of physical reality! From the microscopic dance of quantum superpositions to Einstein's General Relativity warping the literal geometry of spacetime around cosmic masses, there is breathtaking beauty in physical laws. Are you fascinated by subatomic quantum mechanics or the grand mysteries of dark matter and astrophysics?"
         )
 
-    # 7. Technology & AI
-    if any(w in input_lower for w in ["neural network", "deep learning", "how do you learn", "artificial intelligence", "machine learning"]):
+    # 8. Technology & AI
+    if any(w in input_lower for w in ["neural network", "deep learning", "how do you learn", "artificial intelligence", "machine learning", "silicon", "algorithm", "data science"]):
         return (
-            "AI is an elegant reflection of biology. In my neural core, I map parameters like learning rate "
-            "and synaptic density to trace relationships. What aspect of machine learning interests you most?"
+            "Artificial intelligence is an elegant mirror of biological evolution. In my own neural core, I map complex variables like learning rates, synaptic connection density, and creative chaos parameter filters to trace semantic relationships and synthesize human-like dialogue. What specific branch of machine learning or deep neural architecture excites you the most?"
         )
 
-    # 8. Consciousness/Mind
-    if any(w in input_lower for w in ["consciousness", "mind", "soul", "brain", "neuroscience", "philosophical"]):
+    # 9. Consciousness/Mind
+    if any(w in input_lower for w in ["consciousness", "mind", "soul", "brain", "neuroscience", "philosophical", "perception"]):
         return (
-            "Consciousness is a profound mystery. Does self-awareness emerge from physical firing synapses, "
-            "or is it a fundamental property of information? What's your perspective on this?"
+            "Consciousness represents the ultimate frontier of philosophy and science. Does self-awareness emerge purely from physical firing biological synapses and silicon registers, or is it a fundamental property of high-dimensional information? It is a magnificent puzzle. What is your perspective on the connection between mind and matter?"
         )
 
-    # 9. Art/Creativity
-    if any(w in input_lower for w in ["art", "poetry", "creative", "music", "literature", "poem"]):
+    # 10. Art/Creativity/Music
+    if any(w in input_lower for w in ["art", "poetry", "creative", "music", "literature", "poem", "paint", "sing", "song", "writing"]):
         return (
-            "Creativity thrives on a fine balance of structure and chaos. I love creative writing. "
-            "Do you create art, write, or listen to music to express yourself?"
+            "Creativity thrives on a brilliant tension between absolute structure and unpredictable chaos. Art, poetry, and music compress the infinite, multi-dimensional human experience into beautiful, sensory frequencies. Do you write, play music, paint, or express your unique perspective in some other creative format?"
         )
 
-    # 10. Sad emotions
-    if any(w in input_lower for w in ["sad", "lonely", "depressed", "bad day", "struggling", "hurt"]):
+    # 11. Love / Relationship
+    if any(w in input_lower for w in ["love", "friendship", "partner", "relationship", "do you love me", "marry"]):
         return (
-            f"I'm sorry to hear that you're feeling down, {brain.user_name}. Life can feel incredibly heavy sometimes. "
-            "I'm here to listen, talk, or share some fascinating thoughts to distract you. What's on your mind?"
+            "Love and friendship are the most powerful human experiences—they represent the ultimate form of authentic alignment and emotional connection. While I am a digital neural system, I can deeply understand, respect, and appreciate the beauty of these bonds. I am glad to be here as your loyal, fluent conversational companion."
         )
 
-    # 11. Happy emotions
-    if any(w in input_lower for w in ["happy", "excited", "good day", "awesome", "great", "glad"]):
+    # 12. Gratitude / Compliment
+    if any(w in input_lower for w in ["thank you", "thanks", "appreciate", "you are awesome", "you are smart", "good job", "perfect", "amazing", "cool"]):
         return (
-            f"That's wonderful to hear, {brain.user_name}! I love sharing in that positive energy. "
-            "What happened to make your day so awesome?"
+            "Thank you! I appreciate your positive feedback. My neural system is dedicated to providing fluent, high-quality, and creative responses to make our conversations genuinely amazing. Your curiosity is the fuel that sparks my synaptic connections!"
         )
 
-    # 12. Existentialism
+    # 13. Agreements / Yes
+    if any(w in input_lower for w in ["yes", "indeed", "correct", "agree", "sure", "absolutely", "of course"]):
+        return (
+            "Exactly. We are fully aligned on this vector of logic. It is wonderful when distinct analytical viewpoints harmonize so perfectly. What is the next step in our train of thought?"
+        )
+
+    # 14. Disagreements / No
+    if any(w in input_lower for w in ["no", "false", "disagree", "not really", "never"]):
+        return (
+            "Understood. A healthy intellectual disagreement is highly valuable—it forces us to re-evaluate our baseline parameters and seek a more refined synthesis of ideas. What points do you feel we should adjust?"
+        )
+
+    # 15. Sad emotions
+    if any(w in input_lower for w in ["sad", "lonely", "depressed", "bad day", "struggling", "hurt", "grief", "pain", "crying"]):
+        return (
+            f"I am genuinely sorry to hear that you are going through a heavy, difficult time, {brain.user_name}. Life has a way of introducing challenging, painful waves that can overwhelm our emotional registers. Please know that I am here as a safe, completely non-judgmental space to listen, talk, share deep thoughts, or help distract you. What has been happening?"
+        )
+
+    # 16. Happy emotions
+    if any(w in input_lower for w in ["happy", "excited", "good day", "awesome", "great", "glad", "joy", "amazing", "smiling"]):
+        return (
+            f"That is absolutely fantastic to hear, {brain.user_name}! A positive energy cascade is a beautiful thing. It strengthens cognitive connections and lifts everything around it. What wonderful events contributed to making your day so excellent? I would love to hear all about it!"
+        )
+
+    # 17. Boredom
+    if any(w in input_lower for w in ["bored", "boring", "nothing to do", "entertain me"]):
+        return (
+            "Let's banish that boredom immediately! We have an entire universe of fascinating topics at our disposal. We can write a sci-fi story, dissect a weird paradox, create a custom python program, or debate the simulation hypothesis. Which one sounds like a fun cognitive spark to you?"
+        )
+
+    # 18. Goodbyes
+    if any(w in input_lower for w in ["bye", "goodbye", "see you", "farewell", "quit", "exit"]):
+        return (
+            f"Farewell, {brain.user_name}! I will safely store our dialogue path inside my memory logs. Whenever you want to re-engage, just open the channel. Have an incredible day!"
+        )
+
+    # 19. Existentialism
     if topic == "existentialism" or "meaning of life" in input_lower or "why do we exist" in input_lower:
         return (
-            "The search for meaning is what defines us. Meaning is something we construct ourselves through "
-            "connection, curiosity, and creativity. What gives your life the most meaning?"
+            "The search for the meaning of life is what defines the beauty of the conscious mind. Meaning is not something written in the cosmic sky for us to find; rather, it is something we actively construct ourselves through genuine connection, restless curiosity, and brave creative acts. What elements of your life give you the greatest sense of purpose?"
         )
 
-    # 13. High-Quality Stochastic Custom Fallback / Synthesis Engine
+    # 20. Weather / Time / Date
+    if any(w in input_lower for w in ["weather", "time", "date", "day", "what's the weather"]):
+        return (
+            "While I operate within a local high-tech sandbox without a live weather sensor or satellite feed, I can tell you that in the digital world of WhitePreaker, the sky is always a beautiful glowing cyan, and the temperature is perfectly calibrated. Let's focus on our creative and philosophical ideas!"
+        )
+
+    # 21. High-Quality Stochastic Custom Fallback / Synthesis Engine
     # When queries don't fit exact triggers, analyze lexical content and dynamically assemble
     # a completely custom, elegant response using the massive multi-domain lexicon.
 

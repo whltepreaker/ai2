@@ -1,7 +1,7 @@
 /**
  * WhitePreaker Cognitive Chat Engine & Web Speech Integration
  * Bridges API requests, local speech-to-text, fluent text-to-speech, and neural map renderings.
- * Fully supports Autonomous Cycle Mode, Chain of Thought mapping, and direct constraint tracking.
+ * Clean numbers-free dashboard support.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,24 +20,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const voiceSelect = document.getElementById('voiceSelect');
   const muteToggle = document.getElementById('muteToggle');
   const btnReset = document.getElementById('btnReset');
-  const btnAutonomous = document.getElementById('btnAutonomous');
-  const autoText = document.getElementById('autoText');
-  const autoIndicator = document.getElementById('autoIndicator');
 
   // Parameter elements (Auto-fluctuating)
   const barLr = document.getElementById('barLr');
-  const valueLr = document.getElementById('valueLr');
   const barDensity = document.getElementById('barDensity');
-  const valueDensity = document.getElementById('valueDensity');
   const barChaos = document.getElementById('barChaos');
-  const valueChaos = document.getElementById('valueChaos');
 
   // Diagnostics UI
   const brainLoad = document.getElementById('brainLoad');
-  const brainLoadText = document.getElementById('brainLoadText');
-  const brainFireRate = document.getElementById('brainFireRate');
-  const brainTemp = document.getElementById('brainTemp');
-  const userNameDisplay = document.getElementById('userNameDisplay');
   const sysLogStream = document.getElementById('sysLogStream');
 
   // Directives HUD
@@ -63,10 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let ttsEnabled = true;
   let isListening = false;
   let recognitionInstance = null;
-
-  // Autonomous Cycle State
-  let isAutonomousActive = false;
-  let autonomousInterval = null;
 
   // Log function to simulated cyber diagnostics console
   function sysLog(message, type = 'INFO') {
@@ -240,10 +226,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Update HUD State & Status Elements ---
   function updateStateHUD(state) {
-    valueLr.textContent = state.learning_rate.toFixed(4);
-    valueDensity.textContent = state.synaptic_density.toFixed(2);
-    valueChaos.textContent = state.creative_chaos.toFixed(2);
-
     // Set auto bar widths dynamically
     if (barLr) barLr.style.width = `${(state.learning_rate / 0.06) * 100}%`;
     if (barDensity) barDensity.style.width = `${state.synaptic_density * 100}%`;
@@ -259,11 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
       visualizer.creativeChaos = state.creative_chaos;
     }
 
-    brainLoad.style.width = `${state.cognitive_load * 100}%`;
-    brainLoadText.textContent = `${Math.round(state.cognitive_load * 100)}%`;
-    brainFireRate.textContent = `${state.synaptic_fire_rate.toFixed(1)} Hz`;
-    brainTemp.textContent = `${state.neural_temp.toFixed(1)} °C`;
-    userNameDisplay.textContent = state.user_name.toUpperCase();
+    if (brainLoad) brainLoad.style.width = `${state.cognitive_load * 100}%`;
 
     setEmotionBar(emoCreativity, state.emotions.creativity);
     setEmotionBar(emoUnpredictability, state.emotions.unpredictability);
@@ -273,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function setEmotionBar(element, val) {
+    if (!element) return;
     element.style.width = `${val * 100}%`;
     if (val < 0.4) {
       element.className = "h-full bg-blue-600 transition-all duration-500 shadow-[0_0_8px_rgba(37,99,235,0.5)]";
@@ -291,6 +270,12 @@ document.addEventListener('DOMContentLoaded', () => {
     thoughtStep4.textContent = thoughts[3].log;
 
     sysLog("Chain of thought successfully visualised.", "OK");
+  }
+
+  // Helper: check if string contains any Persian/Arabic characters
+  function isPersianOrArabic(text) {
+    const pattern = /[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]/;
+    return pattern.test(text);
   }
 
   function renderDirectives(directives) {
@@ -322,6 +307,12 @@ document.addEventListener('DOMContentLoaded', () => {
           ? 'bg-violet-950/60 border-violet-500 text-violet-100 rounded-tl-none shadow-[0_0_10px_rgba(167,139,250,0.3)]'
           : 'bg-slate-900 border-slate-700 text-slate-100 rounded-tl-none shadow-[0_0_10px_rgba(0,240,255,0.1)] crt-effect'
     }`;
+
+    // Set text alignment right if input is Persian or Arabic
+    if (isPersianOrArabic(text)) {
+      bubble.style.direction = "rtl";
+      bubble.style.textAlign = "right";
+    }
 
     const speakerLabel = document.createElement('div');
     speakerLabel.className = `text-[10px] uppercase tracking-wider font-bold mb-1 ${
@@ -388,72 +379,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Autonomous Step trigger ---
-  async function triggerAutonomousStep() {
-    typingIndicator.classList.remove('hidden');
-    sysLog("Autonomous reflection trigger fired. Initiating cognitive daydream cycle...", "SYS");
-
-    try {
-      const response = await fetch('/api/autonomous-step', { method: 'POST' });
-      if (!response.ok) throw new Error("Internal Server Error during self-reflection.");
-      const data = await response.json();
-
-      typingIndicator.classList.add('hidden');
-
-      // Render self-proposed question
-      renderMessage('ai', data.query, true);
-
-      // Short delay, then render answer
-      setTimeout(() => {
-        renderMessage('ai', data.response);
-        visualizer.triggerActivation(data.neural_map.active_path);
-        updateStateHUD(data.brain_state);
-        renderThoughts(data.thoughts);
-        renderDirectives(data.directives);
-        speakText(data.response);
-      }, 1500);
-
-    } catch (e) {
-      typingIndicator.classList.add('hidden');
-      sysLog(`Autonomous step failed: ${e.message}`, "WARN");
-    }
-  }
-
-  // --- Toggle Autonomous Mode ---
-  if (btnAutonomous) {
-    btnAutonomous.addEventListener('click', () => {
-      isAutonomousActive = !isAutonomousActive;
-
-      if (isAutonomousActive) {
-        btnAutonomous.className = "cyber-btn border border-green-500 bg-green-950/40 text-green-400 px-4 py-1.5 rounded flex items-center gap-2 font-bold transition pulse-glow";
-        autoText.textContent = "AUTONOMOUS CYCLE: ACTIVE";
-        sysLog("Autonomous Self-Reflection state successfully ENGAGED.", "SYS");
-
-        // Trigger immediately
-        triggerAutonomousStep();
-
-        // Start cycle every 10 seconds
-        autonomousInterval = setInterval(triggerAutonomousStep, 10000);
-      } else {
-        btnAutonomous.className = "cyber-btn border border-pink-600 bg-pink-950/20 text-pink-500 hover:bg-pink-950/60 px-4 py-1.5 rounded flex items-center gap-2 font-bold transition";
-        autoText.textContent = "AUTONOMOUS CYCLE: OFF";
-        sysLog("Autonomous Self-Reflection state successfully DISENGAGED.", "SYS");
-
-        if (autonomousInterval) {
-          clearInterval(autonomousInterval);
-          autonomousInterval = null;
-        }
-      }
-    });
-  }
-
   if (chatForm) {
     chatForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      // If autonomous mode is active, warn user
-      if (isAutonomousActive) {
-        sysLog("User override detected during autonomous loop. Pausing cycle to receive sensory input.", "WARN");
-      }
       const text = userInput.value;
       submitChatMessage(text);
     });
@@ -465,11 +393,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (confirm("Reset current neural matrices and erase temporary dialogue records?")) {
         sysLog("Flushing neural memory buffers...", "SYS");
         if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-
-        // Turn off autonomous if active
-        if (isAutonomousActive) {
-          btnAutonomous.click();
-        }
 
         try {
           const response = await fetch('/api/reset', { method: 'POST' });

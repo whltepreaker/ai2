@@ -31,35 +31,6 @@
         </p>
       </div>
     </div>
-
-    <!-- Autonomous Mode Switch & Status HUD -->
-    <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-mono">
-
-      <!-- Autonomous Mode Toggle Button -->
-      <button id="btnAutonomous"
-        class="cyber-btn border border-pink-600 bg-pink-950/20 text-pink-500 hover:bg-pink-950/60 px-4 py-1.5 rounded flex items-center gap-2 font-bold transition">
-        <span id="autoIndicator" class="relative flex h-2.5 w-2.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-pink-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-pink-500"></span>
-        </span>
-        <span id="autoText">AUTONOMOUS CYCLE: OFF</span>
-      </button>
-
-      <div class="flex items-center gap-2 bg-slate-900/60 border border-blue-900/40 px-3 py-1.5 rounded">
-        <span class="text-gray-500">OPERATOR:</span>
-        <span class="text-white font-bold" id="userNameDisplay">SEEKER</span>
-      </div>
-
-      <div class="flex items-center gap-2 bg-slate-900/60 border border-blue-900/40 px-3 py-1.5 rounded">
-        <span class="text-gray-500">FIRE RATE:</span>
-        <span class="text-cyan-400 font-bold" id="brainFireRate">120.0 Hz</span>
-      </div>
-
-      <div class="flex items-center gap-2 bg-slate-900/60 border border-blue-900/40 px-3 py-1.5 rounded">
-        <span class="text-gray-500">NEURAL TEMP:</span>
-        <span class="text-pink-500 font-bold" id="brainTemp">36.5 °C</span>
-      </div>
-    </div>
   </header>
 
   <!-- MAIN CONTAINER: Splitscreen Layout -->
@@ -97,13 +68,12 @@
           </div>
         </div>
 
-        <!-- Dynamic Parameter Tuning Panel -->
+        <!-- Dynamic Parameter Tuning Panel (All numbers and percentage text removed) -->
         <div class="bg-slate-950/90 border-t border-blue-900/40 p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
           <!-- Learning Rate -->
           <div class="flex flex-col gap-1.5">
             <div class="flex justify-between items-center text-xs font-mono text-gray-400">
               <span>LEARNING RATE (LR)</span>
-              <span class="text-cyan-400 font-bold" id="valueLr">0.0150</span>
             </div>
             <div class="h-2 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
               <div id="barLr" class="h-full bg-cyan-400 transition-all duration-500 shadow-[0_0_8px_rgba(34,211,238,0.5)]" style="width: 15%"></div>
@@ -114,7 +84,6 @@
           <div class="flex flex-col gap-1.5">
             <div class="flex justify-between items-center text-xs font-mono text-gray-400">
               <span>SYNAPTIC DENSITY</span>
-              <span class="text-cyan-400 font-bold" id="valueDensity">0.85</span>
             </div>
             <div class="h-2 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
               <div id="barDensity" class="h-full bg-sky-400 transition-all duration-500 shadow-[0_0_8px_rgba(56,189,248,0.5)]" style="width: 85%"></div>
@@ -125,7 +94,6 @@
           <div class="flex flex-col gap-1.5">
             <div class="flex justify-between items-center text-xs font-mono text-gray-400">
               <span>CREATIVE CHAOS</span>
-              <span class="text-pink-500 font-bold" id="valueChaos">0.70</span>
             </div>
             <div class="h-2 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
               <div id="barChaos" class="h-full bg-pink-500 transition-all duration-500 shadow-[0_0_8px_rgba(236,72,153,0.5)]" style="width: 70%"></div>
@@ -253,7 +221,7 @@
           </div>
         </div>
 
-        <!-- Diagnostics parameters grid -->
+        <!-- Diagnostics parameters grid (All numeric readouts and percentages removed) -->
         <div class="p-3 grid grid-cols-1 sm:grid-cols-12 gap-3 flex-1">
           <!-- Left side: Emotions sliders -->
           <div class="sm:col-span-5 flex flex-col gap-2 border-r border-blue-900/20 pr-3">
@@ -322,7 +290,6 @@
             <div class="flex flex-col gap-1 text-[10px] font-mono">
               <div class="flex justify-between text-gray-400">
                 <span>OVERALL COGNITIVE LOAD</span>
-                <span class="text-cyan-400 font-bold" id="brainLoadText">10%</span>
               </div>
               <div class="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800">
                 <div id="brainLoad" class="h-full bg-gradient-to-r from-cyan-500 via-emerald-400 to-rose-500" style="width: 10%"></div>
