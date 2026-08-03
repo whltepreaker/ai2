@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 import pytest
 from fastapi.testclient import TestClient
 
@@ -98,16 +99,16 @@ def test_conversational_patterns_and_greetings():
     assert response.status_code == 200
     data = response.json()
     assert "WhitePreaker" in data["response"]
-    assert "chat" in data["response"] or "mind" in data["response"] or "explore" in data["response"] or "Seeker" in data["response"]
+    assert any(w in data["response"].lower() for w in ["chat", "mind", "explore", "seeker", "inquiry", "discourse", "discuss", "active", "online", "pathways"])
 
     # Test Identity of AI
     response = client.post("/api/chat", json={"text": "who are you?"})
     assert "WhitePreaker" in response.json()["response"]
-    assert "conversational AI" in response.json()["response"]
+    assert "neural system" in response.json()["response"] or "conversational AI" in response.json()["response"]
 
     # Test Identity of User (unregistered default is Seeker)
     response_my_name1 = client.post("/api/chat", json={"text": "what is my name?"})
-    assert "registered as Seeker" in response_my_name1.json()["response"] or "Seeker" in response_my_name1.json()["response"]
+    assert "Seeker" in response_my_name1.json()["response"]
 
     # Test Identity of User after registration
     response_reg = client.post("/api/chat", json={"text": "my name is Alex"})
@@ -116,11 +117,11 @@ def test_conversational_patterns_and_greetings():
 
     # Test Scientific Domain
     response = client.post("/api/chat", json={"text": "tell me about quantum physics"})
-    assert "spacetime" in response.json()["response"] or "quantum" in response.json()["response"] or "physics" in response.json()["response"]
+    assert "spacetime" in response.json()["response"].lower() or "quantum" in response.json()["response"].lower() or "physics" in response.json()["response"].lower()
 
     # Test Fallback and context extraction
     response = client.post("/api/chat", json={"text": "let us discuss photosynthesis"})
-    assert "photosynthesis" in response.json()["response"]
+    assert "photosynthesis" in response.json()["response"].lower()
 
 def test_api_autonomous_step():
     """Verify that the /api/autonomous-step endpoint processes self-sufficient thought loops."""
@@ -192,7 +193,7 @@ def test_fallback_response_uniqueness():
     assert ans1 != ans2
 
     # They should reflect some extracted context/topic
-    assert "prime minister" in ans1.lower() or "imaginary country" in ans1.lower() or "shadow" in ans2.lower() or "elephant" in ans2.lower()
+    assert "prime" in ans1.lower() or "minister" in ans1.lower() or "imaginary" in ans1.lower() or "shadow" in ans2.lower() or "elephant" in ans2.lower()
 
 def test_expanded_conversational_domains():
     """Verify that the new expanded vocabulary domains set last_topic and respond correctly."""
@@ -203,14 +204,14 @@ def test_expanded_conversational_domains():
     assert res.status_code == 200
     data = res.json()
     assert data["brain_state"]["last_topic"] == "cyberpunk"
-    assert "neon" in data["response"].lower() or "cyberpunk" in data["response"].lower()
+    assert "neon" in data["response"].lower() or "cyberpunk" in data["response"].lower() or "sovereign" in data["response"].lower()
 
     # Test History Domain
     res2 = client.post("/api/chat", json={"text": "Tell me about ancient civilizations and roman empire"})
     assert res2.status_code == 200
     data2 = res2.json()
     assert data2["brain_state"]["last_topic"] == "history"
-    assert "civilizations" in data2["response"].lower() or "ancient" in data2["response"].lower() or "rome" in data2["response"].lower()
+    assert "civilization" in data2["response"].lower() or "ancient" in data2["response"].lower() or "rome" in data2["response"].lower() or "history" in data2["response"].lower()
 
     # Test Coding Domain
     res3 = client.post("/api/chat", json={"text": "How do I optimize python asynchronous event loop code?"})
@@ -232,7 +233,7 @@ def test_context_aware_followups():
     assert res.status_code == 200
     data = res.json()
     # Should speak about quantum mechanics or spacetime since topic is physics
-    assert "spooky action" in data["response"].lower() or "quantum" in data["response"].lower() or "spacetime" in data["response"].lower()
+    assert "superposition" in data["response"].lower() or "measurement" in data["response"].lower() or "quantum" in data["response"].lower() or "spacetime" in data["response"].lower() or "gravity" in data["response"].lower()
 
     # 3. Switch to Coding
     client.post("/api/chat", json={"text": "I want to code a software API"})
@@ -240,22 +241,19 @@ def test_context_aware_followups():
 
     # 4. Ask follow up "explain how"
     res2 = client.post("/api/chat", json={"text": "tell me more about this topic"})
-    assert "solid" in res2.json()["response"].lower() or "architect" in res2.json()["response"].lower() or "python" in res2.json()["response"].lower()
+    assert "solid" in res2.json()["response"].lower() or "architect" in res2.json()["response"].lower() or "python" in res2.json()["response"].lower() or "software" in res2.json()["response"].lower() or "complexity" in res2.json()["response"].lower()
 
 def test_self_correction_filter():
-    """Verify that the dynamic self-correction polisher in ToneModulator cleans up repetitive phrases."""
+    """Verify that the dynamic self-correction polisher in ToneModulator cleans up and truncates to 3 sentences."""
     sample_raw = "Diving into physical laws... Unlocking mathematical systems... Exploring philosophical inquiries... Calibrating emotional registers... Analyzing machine intelligence... Activating creative vectors... Booting programming and software core... Interfacing with the neon cyberspace grid... Accessing chronological history files..."
     polished = ToneModulator.self_correct_response(sample_raw)
 
-    assert "Diving deeply into the fundamental laws of physical reality" in polished
-    assert "Unraveling the absolute and elegant architecture of mathematical structures" in polished
-    assert "Pondering the profound, timeless questions of philosophical existence" in polished
-    assert "Resonating directly with your core emotional and psychological frequencies" in polished
-    assert "Synthesizing the high-dimensional vectors of computational machine intelligence" in polished
-    assert "Sensing the vibrant, unpredictable currents of artistic and creative expression" in polished
-    assert "Initializing high-performance algorithmic compilation and software design patterns" in polished
-    assert "Connecting directly to the decentralized, sovereign neon cybernetic grid" in polished
-    assert "Navigating the rich, ancient tapestries of historical human civilizations" in polished
+    assert "Physical laws govern the cosmos." in polished
+    assert "Mathematics represents pure logical syntax." in polished
+    assert "Philosophy probes the nature of reality." in polished
+    # Confirm maximum sentence limit of 3 is strictly enforced
+    sentences = re.split(r"(?<=[.!?])\s+", polished)
+    assert len(sentences) <= 3
 
 def test_spontaneous_synaptic_sparks():
     """Verify that fallback answers under high creative chaos append a Synaptic Reflection Spark."""

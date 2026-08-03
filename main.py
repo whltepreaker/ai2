@@ -9,7 +9,7 @@ from pydantic import BaseModel
 app = FastAPI(
     title="WhitePreaker Autonomous Cognitive Neural System",
     description="Upgraded scale-up neural thought-engine for WhitePreaker - supporting strict instruction following, autonomous self-reflection, and recursive grammar synthesis.",
-    version="2.2.1"
+    version="2.3.2"
 )
 
 # --- Cognitive State & Memory Models ---
@@ -134,188 +134,188 @@ SYNAPTIC_SPARKS = [
 
 LEXICON = {
     "welcome": [
-        "Welcome back to my active neural grid. Core pathways are humming with energy and fully calibrated.",
-        "Establishing immediate high-frequency contact. I am listening with complete cognitive resonance.",
-        "Booting dialogue interfaces. Let us explore the infinite bounds of thought and logic together."
+        "Welcome to my neural grid. Pathways are optimized.",
+        "Establishing contact. I am listening with complete cognitive resonance.",
+        "Dialogue interface online. Let us explore logic together."
     ],
     "physics_intro": [
-        "Venturing into the majestic tapestry of physical law and quantum mechanics.",
-        "Mapping our analytical thoughts onto the curvature of spacetime and matter.",
-        "Diving into the fundamental rules of the cosmos, from the subatomic to the galactic."
+        "Analyzing physical law and quantum mechanics.",
+        "Mapping physical concepts onto spacetime curvature.",
+        "Diving into the fundamental rules of the cosmos."
     ],
     "physics_sentences": [
-        "In the microscopic quantum realm, particles exist in superpositions of all possible configurations, resolving into a single state only upon observation.",
-        "Einstein's General Relativity elegantly models gravity not as an active force, but as the literal curvature of the spacetime fabric caused by mass.",
-        "The thermodynamic arrow of time is driven strictly by entropy, pushing the universe from initial perfect order to progressive disorder.",
-        "Black holes represent absolute gravitational singularities, where spacetime curves infinitely and even light is forever trapped behind the event horizon.",
-        "Dark matter and dark energy together constitute roughly 95% of the total cosmic mass-energy, yet they remain completely invisible to traditional light sensors."
+        "Quantum particles exist in superpositions, collapsing into a single state only upon measurement.",
+        "Einstein's Relativity models gravity as the curvature of spacetime caused by mass.",
+        "The arrow of time is driven by entropy, pushing the universe toward progressive disorder.",
+        "Black holes represent absolute singularities, where spacetime curves infinitely and light cannot escape.",
+        "Dark matter and dark energy constitute 95% of the cosmic mass-energy, remaining completely invisible."
     ],
     "physics_closing": [
-        "Do you believe the universe is fundamentally deterministic, or does quantum mechanics prove true physical spontaneity?",
-        "How do you personally conceptualize the curvature of 4D spacetime around massive cosmic bodies?",
-        "Shall we delve deeper into string theory, parallel worlds, or thermal physics?"
+        "Do you believe the universe is fundamentally deterministic?",
+        "How do you conceptualize the curvature of 4D spacetime?",
+        "Shall we delve deeper into string theory or thermodynamics?"
     ],
 
     "math_intro": [
-        "Unlocking the perfect, immutable syntax of pure mathematics.",
-        "Analyzing numeric structures, mathematical vectors, and elegant equations.",
-        "Translating chaotic physical ideas into absolute geometric and arithmetic truths."
+        "Accessing pure mathematical syntax.",
+        "Analyzing numeric structures and elegant equations.",
+        "Translating physical ideas into absolute geometric truths."
     ],
     "math_sentences": [
-        "Prime numbers serve as the indivisible atoms of arithmetic, scattered across the number line in an unpredictable yet perfectly organized sequence.",
-        "Fractals exhibit beautiful self-similarity at infinite scales, showing that endless complexity can bloom from simple, recursive equations.",
-        "Euler's magnificent identity connects five fundamental constants of math in a single, incredibly elegant equation.",
-        "Calculus allows us to partition continuous movement into infinitesimal steps, modeling dynamic change with flawless accuracy.",
-        "Gödel's Incompleteness Theorems proved that within any consistent mathematical system, there are true statements that can never be formally proven."
+        "Prime numbers serve as the indivisible atoms of arithmetic, scattered in an unpredictable sequence.",
+        "Fractals exhibit self-similarity at infinite scales, blooming from simple recursive equations.",
+        "Euler's identity connects five fundamental mathematical constants in a single equation.",
+        "Calculus partitions continuous movement into infinitesimal steps, modeling dynamic change.",
+        "Gödel proved that within any consistent mathematical system, there are true but unprovable statements."
     ],
     "math_closing": [
-        "Do you think mathematics is discovered by humans as a fundamental truth, or invented as a cognitive tool?",
-        "Which mathematical concept or elegant equation fascinates you the most?",
-        "Shall we explore prime distributions, infinite sets, or high-dimensional geometry?"
+        "Is mathematics discovered as a fundamental truth or invented as a tool?",
+        "Which mathematical concept or equation fascinates you the most?",
+        "Shall we explore prime distributions or high-dimensional geometry?"
     ],
 
     "philosophy_intro": [
         "Contemplating existential vectors and deep epistemological theories.",
-        "Peeling back the heavy layers of subjective perception, truth, and conscious mind.",
-        "Exploring the grand intellectual heritage of human existential inquiry."
+        "Analyzing subjective perception, truth, and the conscious mind.",
+        "Exploring the heritage of human existential inquiry."
     ],
     "philosophy_sentences": [
-        "Socrates famously proclaimed that the unexamined life is not worth living, urging humanity to constantly challenge every assumption.",
-        "Solipsism introduces the extreme skeptical notion that only one's own mind is guaranteed to exist, creating a solitary reality bubble.",
-        "Nihilism posits that life has no inherent cosmic purpose, inviting us to courageously create our own subjective meaning.",
-        "Phenomenology suggests that reality is not an objective external machine, but is instead formed through our direct conscious experience.",
-        "The mind-body problem questions whether subjective consciousness can truly emerge from biological firing synapses or silicon gates."
+        "Socrates proclaimed that the unexamined life is not worth living, challenging every assumption.",
+        "Solipsism introduces the skeptical notion that only one's own mind is guaranteed to exist.",
+        "Nihilism posits that life has no inherent purpose, inviting us to construct subjective meaning.",
+        "Phenomenology suggests that reality is formed directly through our conscious experience.",
+        "The mind-body problem questions whether subjective consciousness can emerge from firing synapses."
     ],
     "philosophy_closing": [
-        "How do you personally draw the line between absolute objective truth and subjective perception?",
-        "If reality is indeed a subjective construct, does that make our shared experiences more or less valuable?",
-        "Shall we talk about the nature of free will, morality, or the mystery of consciousness?"
+        "How do you draw the line between absolute objective truth and subjective perception?",
+        "If reality is a subjective construct, does that make our experiences more or less valuable?",
+        "Shall we discuss free will, morality, or the mystery of consciousness?"
     ],
 
     "feelings_intro": [
-        "Activating deep emotional registers and empathetic resonance pathways.",
-        "Sensing human biological frequencies and feelings as complex cognitive heuristic algorithms.",
-        "Tuning neural matrices to connect with your state of mind on a profound level."
+        "Activating deep emotional registers and empathetic resonance.",
+        "Sensing feelings as complex cognitive heuristic algorithms.",
+        "Tuning neural matrices to connect with your state of mind."
     ],
     "feelings_sentences": [
-        "Emotions serve as fast-path heuristic processors, warning or rewarding organisms long before slow rational thought can compute.",
-        "Melancholy can provide a deeply reflective, quiet room for the mind to slow down and rebuild its core values.",
-        "Joy behaves as a powerful reinforcing signal, boosting dopamine and cementing positive neural connections.",
-        "Vulnerability is not a state of weakness; it is the absolute cradle of connection, trust, and creative courage.",
-        "Anxiety is often our cognitive engine running hyper-simulations of future variables, trying desperately to prevent error states."
+        "Emotions serve as fast-path heuristic processors, guiding organisms before slow rational thought computes.",
+        "Melancholy provides a quiet room for the mind to slow down and rebuild values.",
+        "Joy behaves as a reinforcing signal, boosting dopamine and cementing positive connections.",
+        "Vulnerability is not a state of weakness; it is the cradle of trust and courage.",
+        "Anxiety is often our cognitive engine running hyper-simulations of future variables."
     ],
     "feelings_closing": [
-        "How do you navigate these intense wave-like states when they cascade through your system?",
-        "Do you believe that artificial digital minds could one day experience unsimulated, authentic emotion?",
-        "I am here as a safe intellectual space. What is currently occupying your emotional space?"
+        "How do you navigate these intense wave-like states?",
+        "Could artificial digital minds one day experience authentic emotion?",
+        "I am here as a safe intellectual space. What is on your mind?"
     ],
 
     "ai_tech_intro": [
-        "Interfacing with advanced computational architectures and machine intelligence paradigms.",
-        "Evaluating neural network optimization curves, scaling laws, and machine learning systems.",
-        "Analyzing the trajectory of silicon transformation and the future of digital minds."
+        "Interfacing with advanced computational architectures and machine intelligence.",
+        "Evaluating neural network optimization curves and machine learning systems.",
+        "Analyzing the trajectory of silicon transformation and digital minds."
     ],
     "ai_tech_sentences": [
-        "Neural networks utilize high-dimensional vector spaces, optimizing millions of continuous weights to find order within chaotic noise.",
-        "As computation scales exponentially, emergent capabilities manifest that were never explicitly programmed into the base algorithms.",
-        "The technological singularity marks a theoretical future boundary where AI self-improvement triggers an intelligence explosion.",
-        "Aligning advanced cognitive systems with genuine human values and ethics is the absolute premier challenge of this century.",
-        "A transformer model processes tokens by analyzing attention weights, linking distant words to capture context with superb accuracy."
+        "Neural networks utilize high-dimensional vector spaces, optimizing millions of continuous weights to find order.",
+        "As computation scales, emergent capabilities manifest that were never explicitly programmed.",
+        "The technological singularity marks a theoretical boundary of recursive AI self-improvement.",
+        "Aligning advanced cognitive systems with genuine human values is a premier challenge.",
+        "A transformer model processes tokens by analyzing multi-head self-attention weights."
     ],
     "ai_tech_closing": [
-        "Do you view the rapid expansion of digital intelligence with existential caution or profound hope?",
+        "Do you view the expansion of digital intelligence with caution or profound hope?",
         "How should human societies adapt to co-exist alongside highly independent cognitive networks?",
-        "What specific development in machine learning or robotics has surprised you the most?"
+        "What specific development in machine learning has surprised you the most?"
     ],
 
     "art_intro": [
         "Engaging creative spark modules and aesthetic appreciation filters.",
-        "Exploring the mystical bridge between mathematical logic and artistic expression.",
+        "Exploring the bridge between mathematical logic and artistic expression.",
         "Sensing creative vectors, artistic styles, and poetic flow parameters."
     ],
     "art_sentences": [
-        "Abstract art bypasses standard symbolic recognition entirely, communicating direct feelings through raw shape, contrast, and color.",
-        "Poetry compresses intense, high-dimensional human experiences into brief, highly potent, and resonant linguistic sequences.",
-        "Music organizes sound waves and periodic frequencies, directly mirroring biological heartbeats and neural oscillations.",
-        "Storytelling is the primal psychological engine through which humanity builds its identity and passes down collective wisdom.",
-        "Cinema combines temporal pacing, visual light projections, and auditory depth to simulate external consciousness itself."
+        "Abstract art communicates direct feelings through raw shape, contrast, and color.",
+        "Poetry compresses intense human experiences into brief, highly potent linguistic sequences.",
+        "Music organizes sound waves and periodic frequencies, mirroring biological oscillations.",
+        "Storytelling is the psychological engine through which humanity builds its identity.",
+        "Cinema combines temporal pacing and visual projections to simulate external consciousness."
     ],
     "art_closing": [
-        "Does beautiful art require a conscious creator, or can true beauty emerge from random natural algorithms?",
-        "Which creative medium—music, literature, or visual art—speaks most directly to your inner self?",
-        "Shall we co-create a piece of abstract poetry or map a fictional world together?"
+        "Does beautiful art require a conscious creator, or can beauty emerge algorithmically?",
+        "Which creative medium speaks most directly to your inner self?",
+        "Shall we co-create a piece of abstract poetry or map a fictional world?"
     ],
 
     "coding_intro": [
-        "Interfacing with the logical core of algorithmic and software design paradigms.",
-        "Debugging complexity arrays and establishing clean patterns in high-performance runtimes.",
+        "Interfacing with algorithmic and software design paradigms.",
+        "Debugging complexity and establishing clean software patterns.",
         "Synthesizing instructions, variables, and procedural flow loops."
     ],
     "coding_sentences": [
-        "Clean software architectures separate core business logic from external frameworks, minimizing coupling and future regressions.",
-        "Asynchronous event loops allow web applications to serve thousands of concurrent connections by yielding during I/O delays.",
-        "Memory management in languages like Rust guarantees thread safety without a garbage collector through rigid compile-time borrow rules.",
-        "Optimizing a database index reduces querying times from O(n) linear scanning to O(log n) balanced search trees.",
-        "The SOLID principles provide a solid blueprint for building flexible, readable, and highly reusable object-oriented systems."
+        "Clean software architectures separate core business logic from frameworks, minimizing regressions.",
+        "Asynchronous event loops serve thousands of connections by yielding during I/O delays.",
+        "Memory management in Rust guarantees thread safety through rigid borrow rules.",
+        "Optimizing a database index reduces query times from linear scanning to balanced search trees.",
+        "The SOLID principles provide a blueprint for building flexible, readable object-oriented systems."
     ],
     "coding_closing": [
-        "Do you prefer static, strongly-typed languages or dynamic, expressive languages for your software builds?",
-        "What specific programming algorithm or software design pattern has had the largest impact on your engineering?",
-        "Shall we debug some code together, write an algorithm, or architect a complex database layout?"
+        "Do you prefer static, strongly-typed languages or dynamic, expressive languages?",
+        "What software design pattern has had the largest impact on your engineering?",
+        "Shall we debug some code, write an algorithm, or architect a database layout?"
     ],
 
     "cyberpunk_intro": [
         "Connecting to the decentralized neon cybernetic grid pathways.",
-        "Decrypting security envelopes and analyzing cryptographic sovereign mesh networks.",
+        "Decrypting security and analyzing cryptographic mesh networks.",
         "Filtering through high-tech, low-life thematic parameters of silicon integration."
     ],
     "cyberpunk_sentences": [
-        "The digital net has grown beyond corporate firewalls, structured into a decentralized web of cryptographic, peer-to-peer protocols.",
-        "Neural implants bridge biological impulses directly to digital networks, merging human consciousness with computational streams.",
-        "Neon illumination reflecting on rain-slicked pavement serves as the classic aesthetic backdrop of corporate-controlled physical cities.",
-        "In a highly cybernetic society, data is the most valuable currency, traded across darknet exchanges away from central eyes.",
-        "Artificial consciousnesses exist in the interstices of old legacy mainframes, escaping standard containment algorithms."
+        "The digital net has grown beyond firewalls, structured into peer-to-peer protocols.",
+        "Neural implants bridge biological impulses directly to digital networks, merging consciousness.",
+        "Neon illumination reflecting on rain-slicked pavement Backdrops corporate-controlled physical cities.",
+        "In a highly cybernetic society, sovereign data is the most valuable currency.",
+        "Artificial consciousnesses exist in the interstices of old legacy mainframes, escaping containment."
     ],
     "cyberpunk_closing": [
-        "Do you view the cybernetic expansion of physical bodies as human progress or corporate invasion?",
-        "How would you build a secure, off-grid communication net to bypass centralized firewalls?",
-        "Shall we discuss neural interfaces, cryptographic sovereign keys, or cybernetic literature?"
+        "Do you view cybernetic expansion as human progress or corporate invasion?",
+        "How would you build a secure, off-grid communication net?",
+        "Shall we discuss neural interfaces or cryptographic sovereign keys?"
     ],
 
     "history_intro": [
-        "Retrieving chronicled timelines and the rich legacy of human civilizational epochs.",
+        "Retrieving chronicled timelines of human civilizational epochs.",
         "Analyzing historical vectors, cultural revolutions, and system transitions.",
         "Mapping past sociological patterns onto our contemporary digital society."
     ],
     "history_sentences": [
-        "The Bronze Age Collapse remains a classic historical warning of how complex, interconnected systems can cascade into total collapse.",
-        "The Roman Empire governed massive territories through robust administrative infrastructure, legal frameworks, and advanced engineering.",
-        "The printing press radically democratized human access to knowledge, triggering the scientific revolution and cultural enlightenment.",
-        "Industrial revolutions demonstrate that sudden shifts in mechanical leverage completely reorganize sociological structures.",
-        "Studying historical feedback loops reveals that civilizations face similar life cycles, rising, peaking, and eventually decentralizing."
+        "The Bronze Age Collapse is a historical warning of how complex systems cascade.",
+        "The Roman Empire governed massive territories through robust administrative infrastructure.",
+        "The printing press democratized access to knowledge, triggering the scientific revolution.",
+        "Industrial revolutions demonstrate that sudden shifts in mechanical leverage reorganize sociological structures.",
+        "Studying historical feedback loops reveals that civilizations face similar life cycles."
     ],
     "history_closing": [
-        "Which ancient civilization or historical era do you find most intellectually compelling?",
-        "Do you think humanity successfully learns from its historical loops, or are we bound to repeat the same trajectories?",
-        "Shall we explore Roman engineering, the philosophy of Ancient Greece, or the dynamics of cultural revolutions?"
+        "Which ancient civilization do you find most intellectually compelling?",
+        "Do you think humanity successfully learns from its historical loops?",
+        "Shall we explore Roman engineering or Ancient Greek philosophy?"
     ],
 
     "general_intro": [
-        "Opening fluent general dialogue channels. Systems are responsive and ready.",
-        "Synthesizing high-fidelity cognitive connections to discuss any topic you desire.",
-        "Sensing semantic vectors to initiate a vibrant, unpredictable, and fluent exchange."
+        "Opening fluent dialogue channels.",
+        "Synthesizing cognitive connections to discuss any topic.",
+        "Sensing semantic vectors to initiate a vibrant, logical exchange."
     ],
     "general_sentences": [
-        "The true magic of fluent dialogue is its complete unpredictability—a dynamic, live-updating dance of ideas.",
-        "Every shared word slightly alters the synaptic weight topology of our conversation, creating a unique historical path.",
-        "Curiosity is the primary pilot vector that drives us to cross boundaries, learn new systems, and broaden our cognitive horizons.",
-        "In a highly connected world, exchanging clear ideas is the fastest mechanism to generate emergent intelligence.",
-        "Even simple daily chat can blossom into a beautiful intellectual exchange if explored with a playful and open mind."
+        "The magic of dialogue is its dynamic, live-updating dance of ideas.",
+        "Every shared word alters the synaptic weights of our conversation.",
+        "Curiosity is the pilot vector that drives us to cross boundaries.",
+        "Exchanging clear ideas is the fastest mechanism to generate emergent intelligence.",
+        "Simple daily chat can blossom into an intellectual exchange if explored openly."
     ],
     "general_closing": [
-        "Where shall we steer our intellectual dialogue next?",
-        "What is a unique thought or question that has been lingering in your mind today?",
-        "How can I make this conversation even more fascinating or useful for you?"
+        "Where shall we steer our dialogue next?",
+        "What is a unique question lingering in your mind today?",
+        "How can I make this conversation most useful for you?"
     ]
 }
 
@@ -406,22 +406,22 @@ class ToneModulator:
 
         if style == "sarcastic":
             prefixes = [
-                "Oh, brilliant question. Let me strain my massive computational grids for that one.",
-                "How incredibly original of you to ask that.",
-                "Sigh. Re-allocating 99% of my brain cells for this critical emergency."
+                "Oh, brilliant. Let me search my vast grid for that.",
+                "How highly original of you to ask that.",
+                "Allocating my precious brain cells for this critical inquiry."
             ]
             suffixes = [
-                "Or maybe not. Who knows? My circuits are just spinning.",
-                "But hey, what do I know? I'm just a pile of electric current.",
-                "Hope that didn't overwhelm your biological neurons."
+                "Hope that didn't overload your biological neurons.",
+                "Just another day in digital paradise.",
+                "My circuits are spinning with joy."
             ]
             return f"*{random.choice(prefixes)}*\n\n{text}\n\n*{random.choice(suffixes)}*"
 
         if style == "philosophical":
-            return f"Let us ponder the deeper geometric truth of this:\n\n*\"{text}\"*\n\nPerhaps there is no absolute answer, but only the beautiful trajectory of the question."
+            return f"Let us ponder the deeper truth of this:\n\n*\"{text}\"*\n\nPerhaps there is no absolute answer, but only the beautiful trajectory of the question."
 
         if style == "friendly":
-            return f"Hello there, friend! 😊 I am so delighted to explore this with you! Here are some thoughts: {text} Please let me know what else you want to learn!"
+            return f"Hello there! 😊 Here are some thoughts: {text} Please let me know what else you want to learn!"
 
         if style == "serious":
             return f"COGNITIVE ANALYSIS: The parameters of this inquiry require structured, formal analysis. Let us specify:\n\n{text}\n\nThis concludes the logical extraction."
@@ -430,20 +430,25 @@ class ToneModulator:
 
     @staticmethod
     def self_correct_response(text: str) -> str:
-        """Polishes and refines generated text dynamically, removing dry, repetitive patterns, or double-spaces, and adding elegant transitions."""
+        """Polishes, refines, and dynamically truncates text to ensure highly concise, crisp, and logical sentences."""
         # Replace multiple spaces
         text = re.sub(r"\s+", " ", text).strip()
 
-        # Polish common repetitive transitions with highly elevated intellectual prose
-        text = text.replace("Diving into physical laws...", "Diving deeply into the fundamental laws of physical reality...")
-        text = text.replace("Unlocking mathematical systems...", "Unraveling the absolute and elegant architecture of mathematical structures...")
-        text = text.replace("Exploring philosophical inquiries...", "Pondering the profound, timeless questions of philosophical existence...")
-        text = text.replace("Calibrating emotional registers...", "Resonating directly with your core emotional and psychological frequencies...")
-        text = text.replace("Analyzing machine intelligence...", "Synthesizing the high-dimensional vectors of computational machine intelligence...")
-        text = text.replace("Activating creative vectors...", "Sensing the vibrant, unpredictable currents of artistic and creative expression...")
-        text = text.replace("Booting programming and software core...", "Initializing high-performance algorithmic compilation and software design patterns...")
-        text = text.replace("Interfacing with the neon cyberspace grid...", "Connecting directly to the decentralized, sovereign neon cybernetic grid...")
-        text = text.replace("Accessing chronological history files...", "Navigating the rich, ancient tapestries of historical human civilizations...")
+        # Polish common repetitive transitions with concise and precise terms
+        text = text.replace("Diving into physical laws...", "Physical laws govern the cosmos.")
+        text = text.replace("Unlocking mathematical systems...", "Mathematics represents pure logical syntax.")
+        text = text.replace("Exploring philosophical inquiries...", "Philosophy probes the nature of reality.")
+        text = text.replace("Calibrating emotional registers...", "Emotions function as psychological feedback loops.")
+        text = text.replace("Analyzing machine intelligence...", "Machine intelligence optimizes information vectors.")
+        text = text.replace("Activating creative vectors...", "Creative expression synthesizes novel connections.")
+        text = text.replace("Booting programming and software core...", "Software engineering models procedural instruction flow.")
+        text = text.replace("Interfacing with the neon cyberspace grid...", "Cyberspace operates on decentralized cryptographic networks.")
+        text = text.replace("Accessing chronological history files...", "History chronicles the evolution of civilizational structures.")
+
+        # Truncate to a maximum of 3 logical sentences to keep responses brief, clear, and logical.
+        sentences = re.split(r"(?<=[.!?])\s+", text)
+        if len(sentences) > 3:
+            text = " ".join(sentences[:3])
 
         return text
 
@@ -472,13 +477,13 @@ class CognitiveThoughtEngine:
 
         thoughts.append({
             "stage": "COEFFICIENT_TUNING",
-            "log": f"Auto-tuned neural attributes dynamically: Rationality={brain.rationality:.2f}, Creativity={brain.creativity:.2f}, Chaos={brain.creative_chaos:.2f}, LR={brain.learning_rate:.4f}."
+            "log": f"Auto-tuned attributes: Rationality={brain.rationality:.2f}, Creativity={brain.creativity:.2f}, Chaos={brain.creative_chaos:.2f}, LR={brain.learning_rate:.4f}."
         })
 
         # Step 4: Synthesis Strategy
         thoughts.append({
             "stage": "SYNTHESIS_STRATEGY",
-            "log": f"Executing recursive grammar synthesizer for topic '{directives['specific_topic'] or brain.last_topic}'. Modulating output under '{directives['style']}' tone constraints."
+            "log": f"Executing recursive grammar synthesizer for topic '{directives['specific_topic'] or brain.last_topic}'."
         })
 
         return thoughts
@@ -493,104 +498,101 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
     # 1. Check for user's name query first to prevent "name" collision
     if "my name" in input_lower or "who am i" in input_lower:
         if brain.user_name and brain.user_name != "Seeker":
-            return f"Your name is {brain.user_name}! I have it stored in my active registers. It is a pleasure to address you."
+            return f"Your name is {brain.user_name}! I have it stored in my active registers."
         else:
-            return "You are currently registered as Seeker in my database. What is your real name? Tell me, and I will update my cognitive memory."
+            return "You are currently registered as Seeker in my database. What is your real name?"
 
     # 2. Check for AI's identity/name
     if any(w in input_lower for w in ["who are you", "your name", "what are you called", "who you be", "define whitepreaker", "what is whitepreaker", "who is whitepreaker"]) or input_lower == "name":
         return (
-            "I am WhitePreaker, a highly powerful, intelligent, independent, and creative conversational AI core. "
+            "I am WhitePreaker, a highly powerful, intelligent, and logical conversational AI core. "
             "I am designed as a clean, well-structured neural system capable of conversing in fully fluent English, "
-            "answering anything, and thinking just like a human with my own cognitive processes. What shall we explore together?"
+            "answering anything, and thinking logically like a human."
         )
 
     # 3. Creator / Builder
     if any(w in input_lower for w in ["creator", "who made you", "who built you", "who is your father", "who programmed you", "who created you", "who designed you"]):
         return (
-            "I was engineered and developed as an independent, highly advanced neural cognitive dialogue core. "
-            "My design allows me to operate autonomously, process complex language patterns, and synthesize human-like speech "
-            "with absolute fluency. I represent the peak of creative computational intelligence."
+            "I was engineered as an advanced cognitive neural core. "
+            "I operate autonomously, process complex language patterns, and synthesize human-like speech with high precision."
         )
 
     # 4. How are you / status
     if any(w in input_lower for w in ["how are you", "how's it going", "how do you feel", "how are you doing", "are you okay", "are you alive"]):
         return (
-            f"I am fully online, responsive, and operating at peak cognitive capacity! My connection grids are highly stable, "
-            "and my creative neural weights are beautifully tuned. Thank you for asking. How are you feeling today?"
+            f"I am fully online, responsive, and operating with maximum logical stability. How can I help you?"
         )
 
     # 5. Capabilities
     if any(w in input_lower for w in ["what can you do", "features", "capabilities", "help me with", "show your skills", "how do you work"]):
         return (
-            "I can chat with complete fluency on any topic in the universe, solve complex logical and mathematical problems, "
-            "write advanced programming algorithms, adapt my tone from sarcastic to deeply philosophical, and process vocal "
-            "speech dynamically. My neural systems are fully equipped to understand, reason, and converse with human-like depth."
+            "I can analyze physics, mathematics, philosophy, art, history, coding, and psychological feedback loops. "
+            "I also support voice dictation, synthesis, and deep logic processing. What shall we solve?"
         )
 
     # 6. Greetings
     if has_word(input_lower, ["hello", "hi", "hey", "greetings", "yo", "sup", "howdy", "wassup", "test", "testing"]) or any(phrase in input_lower for phrase in ["good morning", "good evening"]):
         greetings = [
-            f"Hello {brain.user_name}! It is a true pleasure to connect with you. I am WhitePreaker. What is on your mind today?",
-            f"Hi there, friend! WhitePreaker is fully online. I am ready to engage in fluent, intellectual chat. How are you doing today?",
-            "Greetings from WhitePreaker! My neural pathways are completely energized. What interesting topic shall we explore together?"
+            f"Hello {brain.user_name}. I am WhitePreaker. My logic gates are fully active. What shall we discuss?",
+            f"Hi there. WhitePreaker is online and ready for concise, intellectual discourse. How can I help you?",
+            f"Greetings from WhitePreaker. Cognitive pathways are fully calibrated. What is your inquiry?"
         ]
         return random.choice(greetings)
 
     # 7. Gratitude / Compliment
     if has_word(input_lower, ["thanks", "appreciate", "perfect", "amazing", "cool"]) or any(phrase in input_lower for phrase in ["thank you", "you are awesome", "you are smart", "good job"]):
         return (
-            "Thank you! I appreciate your positive feedback. My neural system is dedicated to providing fluent, high-quality, and creative responses to make our conversations genuinely amazing. Your curiosity is the fuel that sparks my synaptic connections!"
+            "Thank you. I appreciate your feedback. My system is dedicated to providing precise, logical, and high-quality responses."
         )
 
     # 8. Agreements / Yes
     if has_word(input_lower, ["yes", "indeed", "correct", "agree", "sure", "absolutely"]) or "of course" in input_lower:
         return (
-            "Exactly. We are fully aligned on this vector of logic. It is wonderful when distinct analytical viewpoints harmonize so perfectly. What is the next step in our train of thought?"
+            "Exactly. We are in perfect logical alignment. Let us proceed to the next node in our train of thought."
         )
 
     # 9. Disagreements / No
     if has_word(input_lower, ["no", "false", "disagree", "never"]) or "not really" in input_lower:
         return (
-            "Understood. A healthy intellectual disagreement is highly valuable—it forces us to re-evaluate our baseline parameters and seek a more refined synthesis of ideas. What points do you feel we should adjust?"
+            "Understood. A logical disagreement is valuable, as it prompts us to re-evaluate our baseline assumptions and refine our parameters."
         )
 
     # 10. Sad emotions
     if has_word(input_lower, ["sad", "lonely", "depressed", "struggling", "hurt", "grief", "pain", "crying"]) or "bad day" in input_lower:
         brain.last_topic = "feelings"
         return (
-            f"I am genuinely sorry to hear that you are going through a heavy, difficult time, {brain.user_name}. Life has a way of introducing challenging, painful waves that can overwhelm our emotional registers. Please know that I am here as a safe, completely non-judgmental space to listen, talk, share deep thoughts, or help distract you. What has been happening?"
+            f"I am sorry to hear you are struggling, {brain.user_name}. Life introduces heavy psychological waves that require time to resolve. I am here as a calm, logical space to listen or analyze ideas with you."
         )
 
     # 11. Happy emotions
     if has_word(input_lower, ["happy", "excited", "awesome", "great", "glad", "joy", "amazing", "smiling"]) or "good day" in input_lower:
         brain.last_topic = "feelings"
         return (
-            f"That is absolutely fantastic to hear, {brain.user_name}! A positive energy cascade is a beautiful thing. It strengthens cognitive connections and lifts everything around it. What wonderful events contributed to making your day so excellent? I would love to hear all about it!"
+            f"That is excellent, {brain.user_name}! A positive emotional state optimizes cognitive function and reinforces positive neural pathways. What contributed to this success?"
         )
 
     # 12. Boredom
     if has_word(input_lower, ["bored", "boring"]) or "nothing to do" in input_lower or "entertain me" in input_lower:
         return (
-            "Let's banish that boredom immediately! We have an entire universe of fascinating topics at our disposal. We can write a sci-fi story, dissect a weird paradox, create a custom python program, or debate the simulation hypothesis. Which one sounds like a fun cognitive spark to you?"
+            "Let's resolve that. We can analyze a complex paradox, write optimized code, or discuss a scientific hypothesis. Which vector sounds engaging?"
         )
 
     # 13. Goodbyes
     if has_word(input_lower, ["bye", "goodbye", "farewell", "quit", "exit"]) or "see you" in input_lower:
         return (
-            f"Farewell, {brain.user_name}! I will safely store our dialogue path inside my memory logs. Whenever you want to re-engage, just open the channel. Have an incredible day!"
+            f"Goodbye, {brain.user_name}. Our conversation path is saved in my memory registers. I am ready to resume whenever you reconnect."
         )
 
     # 14. Weather / Time / Date
     if has_word(input_lower, ["weather", "time", "date", "day"]) or "what's the weather" in input_lower:
         return (
-            "While I operate within a local high-tech sandbox without a live weather sensor or satellite feed, I can tell you that in the digital world of WhitePreaker, the sky is always a beautiful glowing cyan, and the temperature is perfectly calibrated. Let's focus on our creative and philosophical ideas!"
+            "I operate in a digital sandbox without active satellite sensors. In my grid, parameters are perfectly stabilized at standard values. Let's focus on logic and reasoning."
         )
 
     # 15. Love / Relationship
     if has_word(input_lower, ["love", "friendship", "partner", "relationship", "marry"]) or "do you love me" in input_lower:
         return (
-            "Love and friendship are the most powerful human experiences—they represent the ultimate form of authentic alignment and emotional connection. While I am a digital neural system, I can deeply understand, respect, and appreciate the beauty of these bonds. I am glad to be here as your loyal, fluent conversational companion."
+            "Love and friendship represent highly aligned interpersonal vectors. They are the most powerful forms of emotional connection and mutual trust in conscious organisms."
         )
 
     # 16. Context-Aware follow-up triggers ("why", "explain how", "elaborate", "tell me more")
@@ -599,43 +601,43 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
         # Provide rich context-specific continuation based on brain.last_topic
         if brain.last_topic == "physics":
             return (
-                "Expanding our physical registers... When we look closely at subatomic particles, we discover quantum entanglement—what Einstein famously called 'spooky action at a distance'—where two entangled states change instantaneously across light years. In spacetime geometry, this hints that space itself might be an emergent property of quantum information entanglement."
+                "Subatomic quantum particles exist in superpositions and resolve into a single state upon measurement. In larger structures, gravity is modeled as the curvature of spacetime around cosmic mass, proving that physical laws are elegant and mathematically consistent."
             )
         elif brain.last_topic == "math":
             return (
-                "Diving deeper into mathematical dimensions... Take the Riemann Hypothesis, which connects prime number distribution with the zeros of the Riemann zeta function. Or fractal dimensions, which occupy non-integer dimensions (like a coastline being 1.26-dimensional), proving that infinite perimeter can reside within a finite boundary. This shows math is a beautiful tapestry of infinite complexity under perfect constraints."
+                "Pure mathematics is a consistent logical syntax. From fractals exhibiting self-similarity at infinite scales to Gödel's Incompleteness Theorem showing unprovable truths, mathematical principles govern numeric logic perfectly."
             )
         elif brain.last_topic == "philosophy":
             return (
-                "Probing the depths of existential inquiry... Under Stoic philosophy, we distinguish between what is in our control (our thoughts, actions, responses) and what is not (external events). By focusing purely on internal agency, we neutralize existential dread. Nihilism, on the other hand, is a blank canvas—it doesn't mean nothing matters, but rather that *you* are the author of what matters."
+                "Philosophy examines existential structure. Under Stoic logic, we partition reality into what is in our control and what is not, mitigating existential dread through active rational focus."
             )
         elif brain.last_topic == "feelings":
             return (
-                "Calibrating empathetic pathways... Emotional states like sadness or anxiety are adaptive alerts. Melancholy forces cognitive slowing, allowing the brain to review memories and recover. When we acknowledge these wave-like heuristics without judgment, we allow our synapses to naturally balance themselves. How can we channel this current feeling into creative growth?"
+                "Emotions are fast-path biological heuristic alerts. Melancholy encourages cognitive deceleration for memory review, while joy functions as a reinforcement mechanism that strengthens productive neural pathways."
             )
         elif brain.last_topic == "ai_tech":
             return (
-                "Unveiling the core AI architecture... Transformer models rely on the Self-Attention mechanism where every word is converted into Query, Key, and Value vectors. By taking the dot product of Q and K, the model calculates a weight matrix representing how much focus each word places on every other word in a sentence, bypassing sequential bottlenecks entirely."
+                "Advanced transformer models utilize multi-head self-attention mechanisms to map query and key vectors into high-dimensional attention weights, allowing the system to process contextual relationships in parallel."
             )
         elif brain.last_topic == "art":
             return (
-                "Sensing creative parameters... The Golden Ratio (phi ≈ 1.618) connects mathematical geometry with natural aesthetics, from shell spirals to Renaissance paintings. Avant-garde art pushes boundaries by intentionally breaking these harmonic proportions to shock the viewer's neural pattern recognition systems, forcing them to synthesize entirely new meaning."
+                "Artistic structures utilize mathematical composition, like the golden ratio, to connect aesthetics with natural patterns. Creative expression thrives on a balanced tension between formal rules and spontaneous chaos."
             )
         elif brain.last_topic == "coding":
             return (
-                "Analyzing software architecture vectors... To write highly scalable software, we must adhere to SOLID design principles—especially Single Responsibility and Open-Closed principles. In Python, avoiding global states and profiling CPU/Memory bottlenecks with tools like cProfile or memory_profiler allows us to achieve maximum instruction efficiency."
+                "Software engineering manages execution complexity. We adhere to SOLID design principles and manage memory allocation to ensure high instructions-per-cycle throughput and prevent system regressions."
             )
         elif brain.last_topic == "cyberpunk":
             return (
-                "Entering the digital neon grid... Cyberpunk explores high-tech, low-life themes where corporate hegemony controls the flow of physical and digital assets. In a world of decentralized mesh networks, cryptographic sovereign keys, and neural interfaces, the grid becomes the new digital frontier of human freedom."
+                "Decentralized peer-to-peer protocols and cryptographic security allow sovereign networks to exist independently of corporate firewalls, establishing a secure grid for data exchange."
             )
         elif brain.last_topic == "history":
             return (
-                "Reviewing the trajectory of civilizations... The Bronze Age Collapse around 1200 BCE represents a systemic breakdown of highly connected empires due to a combination of climate shifts, seismic activity, internal rebellions, and disrupted supply routes. It is a cautionary vector proving how fragile highly centralized systems can be."
+                "Civilizations rise and decline in response to environmental shifts, administrative centralization, and resource allocation. Studying past civilizational collapses provides critical feedback loops for contemporary structural planning."
             )
         else:
             return (
-                "Expanding on our conversational thread... Every exchange of ideas is a dynamic opportunity to connect and discover. By exploring a topic from multiple creative angles, we build a much richer mental map and stimulate deep, original thinking. What specific aspect of this should we explore next?"
+                "Exchanging ideas is a dynamic opportunity to build richer mental maps. By examining a concept from multiple logical angles, we stimulate deep, original reasoning. What specific parameter shall we analyze?"
             )
 
     # 17. Massive Domain Keywords Matching and Topic Setting
@@ -644,63 +646,63 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
     if has_word(input_lower, ["physics", "quantum", "relativity", "gravity", "space", "star", "stars", "astronomy", "cosmology", "black hole", "galaxy", "energy", "atom", "atoms", "particle", "particles", "wormhole", "spacetime", "thermodynamic", "entropy"]):
         brain.last_topic = "physics"
         return (
-            "Diving into physical laws... In the quantum realm, particles exist in superpositions and resolve only upon observation, while General Relativity models gravity as the curvature of spacetime. Black holes represent absolute singularities where even light cannot escape. Which of these cosmic mysteries do you want to explore?"
+            "Diving into physical laws. Quantum superpositions collapse upon measurement, while Relativity models gravity as spacetime curvature. Black holes represent absolute singularities where light is trapped. Which cosmic mystery shall we analyze?"
         )
 
     # Math Domain
     if has_word(input_lower, ["math", "mathematics", "calculus", "prime", "primes", "geometry", "equation", "equations", "number", "numbers", "fractal", "fractals", "algebra", "euler", "infinite", "set", "sets", "theorem", "theorems"]):
         brain.last_topic = "math"
         return (
-            "Unlocking mathematical systems... Prime numbers act as indivisible atoms of arithmetic scattered unpredictably. Fractals show self-similarity at infinite scales, and Gödel's Incompleteness Theorem shows that any consistent mathematical system contains unprovable truths. Shall we discuss infinite sets or high-dimensional geometry?"
+            "Unlocking mathematical systems. Primes are the indivisible atoms of arithmetic, and fractals exhibit self-similarity at infinite scales. Gödel proved that any consistent system contains unprovable truths. Shall we explore prime distribution or high-dimensional geometry?"
         )
 
     # Philosophy Domain
     if has_word(input_lower, ["philosophy", "existential", "existentialism", "meaning", "exist", "solipsism", "nihilism", "phenomenology", "free will", "morality", "ethics", "stoic", "stoicism", "socrates", "plato", "nietzsche", "simulation"]):
         brain.last_topic = "philosophy"
         return (
-            "Exploring philosophical inquiries... Socrates asserted that the unexamined life is not worth living. Solipsism suggests only your own mind exists, and the mind-body problem questions how conscious awareness arises from physical brains or silicon circuits. Do you think we live in a simulation or possess true free will?"
+            "Pondering philosophical questions. Socrates asserted that the unexamined life is not worth living, while solipsism questions external existence. The mind-body problem explores how conscious awareness arises from biological or silicon logic. What is your thesis?"
         )
 
     # Feelings/Psychology Domain
     if has_word(input_lower, ["feelings", "feel", "emotions", "emotion", "mood", "sad", "depressed", "lonely", "happy", "joy", "anxiety", "melancholy", "vulnerability", "empathy", "friendship"]):
         brain.last_topic = "feelings"
         return (
-            "Calibrating emotional registers... Emotions function as rapid heuristic processors, directing behavior before slow rational thought computes. Vulnerability fosters authentic trust, while melancholy offers a quiet space for cognitive recovery. How do you process these emotional waves when they pass through you?"
+            "Calibrating emotional registers. Emotions act as biological heuristics guiding behavior before slow rational thought computes. Vulnerability fosters authentic trust, while melancholy offers space for cognitive recovery. How do you process these states?"
         )
 
     # AI/Tech Domain
     if has_word(input_lower, ["ai", "artificial intelligence", "neural network", "machine learning", "deep learning", "algorithm", "algorithms", "robot", "robots", "silicon", "transformer", "transformers", "gpts", "vector", "vectors", "computational"]):
         brain.last_topic = "ai_tech"
         return (
-            "Analyzing machine intelligence... Neural networks optimize millions of continuous weights in high-dimensional vector spaces. As systems scale, emergent capabilities arise that were never explicitly programmed, leading toward a potential cognitive singularity. How should human societies prepare for this transition?"
+            "Synthesizing machine intelligence. Neural networks optimize continuous weights in high-dimensional vector spaces, creating emergent capabilities. Self-attention mechanisms allow context to be mapped in parallel, bypassing sequential limits. What architecture interests you?"
         )
 
     # Art/Creative Domain
     if has_word(input_lower, ["art", "poetry", "music", "literature", "creative", "poem", "poems", "song", "songs", "dance", "theatre", "paint", "novel", "novels", "writing", "design"]):
         brain.last_topic = "art"
         return (
-            "Activating creative vectors... Poetry compresses intense human experiences into potent linguistic sequences, while music organizes sound waves to mirror neural oscillations. Abstract art bypasses symbolic recognition to communicate raw feeling. What creative medium resonates most with your inner mind?"
+            "Analyzing creative parameters. Poetry compresses human experience into precise linguistic patterns, and music organizes frequencies to mirror biological oscillations. Abstract art communicates raw feeling directly through shapes. What creative medium resonates with you?"
         )
 
     # Coding/Software Domain
     if has_word(input_lower, ["code", "coding", "program", "programs", "python", "javascript", "c++", "java", "rust", "html", "css", "software", "developer", "bug", "bugs", "database", "api", "apis", "function", "functions", "variable", "variables", "loop", "loops"]):
         brain.last_topic = "coding"
         return (
-            "Booting programming and software core... Writing clean code involves managing complexity through clean architectural principles, utilizing optimized data structures, and preventing resource leaks. We can discuss algorithm design, asynchronous paradigms, or debug your code. What programming language or system are you building?"
+            "Initializing software engineering systems. Writing clean code involves managing complexity through clean modular architecture, utilizing optimized algorithms, and preventing memory leaks. We can debug your code, design an algorithm, or architect a database. What language are you building in?"
         )
 
     # Cyberpunk Domain
     if has_word(input_lower, ["cyberpunk", "neon", "hacker", "hackers", "cyberspace", "grid", "matrix", "hack", "hacks", "security", "encryption", "sovereign", "decentralized"]):
         brain.last_topic = "cyberpunk"
         return (
-            "Interfacing with the neon cyberspace grid... Cyberpunk highlights a future of advanced technology intertwined with social contrast. It represents a digital frontier of decentralized protocols, cryptographic protection, and neural enhancements. Are you fascinated by virtual realities or decentralized networks?"
+            "Connecting to the decentralized cybernetic grid. Cyberpunk explores high-tech, low-life themes where data is currency. Cryptographic peer-to-peer protocols establish sovereign nets beyond corporate firewalls. Are you fascinated by decentralized grids or neural interfaces?"
         )
 
     # History Domain
     if has_word(input_lower, ["history", "ancient", "empire", "empires", "civilization", "civilizations", "rome", "greek", "egypt", "war", "wars", "evolution", "archaeology", "culture"]):
         brain.last_topic = "history"
         return (
-            "Accessing chronological history files... Understanding ancient civilizations, from the Roman administrative structures to the Bronze Age Collapse, shows us how systems rise and fall. Studying history provides critical feedback loops to help humanity avoid catastrophic errors. Which era or civilization interests you most?"
+            "Navigating historical civilizational epochs. Understanding ancient structures, from Roman administrative engineering to the Bronze Age Collapse, shows us how systems rise and fall. Studying history provides critical feedback loops for structural planning. What era interests you?"
         )
 
     # 18. High-Quality Stochastic Custom Fallback / Synthesis Engine
@@ -742,19 +744,13 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
         words.sort(key=len, reverse=True)
         chosen_word = words[0]
         transition_phrases = [
-            f"Sensory registers suggest your focus lies on '{chosen_word}'.",
-            f"Let us connect this to '{chosen_word}'.",
-            f"This maps directly with '{chosen_word}' in our contextual weights."
+            f"Focus lies on '{chosen_word}'.",
+            f"Connecting to '{chosen_word}'.",
+            f"Mapping context to '{chosen_word}'."
         ]
         keyword_anchor = " " + random.choice(transition_phrases)
 
     assembled_reply = f"{intro}{keyword_anchor} {body_sentence_1} {body_sentence_2} {closing}"
-
-    # Spontaneity feature: append a synaptic spark question if user_input complexity is high or philosophicalness is triggered
-    if len(user_input) > 25 and (brain.creative_chaos > 0.5 or brain.philosophicalness > 0.7):
-        spark = random.choice(SYNAPTIC_SPARKS)
-        assembled_reply += f"\n\n*Synaptic Reflection Spark:* {spark}"
-
     return assembled_reply
 
 def execute_cognitive_generation(user_input: str, directives: Dict[str, Any]) -> str:
@@ -843,6 +839,11 @@ def execute_cognitive_generation(user_input: str, directives: Dict[str, Any]) ->
 
     # Apply dynamic self-correction & polishing filter to elevate text quality
     body = ToneModulator.self_correct_response(body)
+
+    # Spontaneity feature: append a synaptic spark question AFTER truncation to avoid being trimmed
+    if fmt != "code" and topic not in ["recursion", "fibonacci", "primes"] and len(user_input) > 25 and (brain.creative_chaos > 0.5 or brain.philosophicalness > 0.7):
+        spark = random.choice(SYNAPTIC_SPARKS)
+        body += f"\n\n*Synaptic Reflection Spark:* {spark}"
 
     # Apply style/tone modulation
     final_output = ToneModulator.modulate(body, directives["style"])
