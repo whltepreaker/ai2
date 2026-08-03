@@ -6,10 +6,26 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import nltk
+from nltk.tokenize import word_tokenize
+
+# Quietly download necessary NLTK corpora
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    nltk.download('punkt', quiet=True)
+try:
+    nltk.data.find('tokenizers/punkt_tab')
+except LookupError:
+    nltk.download('punkt_tab', quiet=True)
+
 app = FastAPI(
     title="WhitePreaker Autonomous Cognitive Neural System",
     description="Upgraded scale-up neural thought-engine for WhitePreaker - supporting strict instruction following, autonomous self-reflection, and recursive grammar synthesis.",
-    version="2.3.2"
+    version="2.4.3"
 )
 
 # --- Cognitive State & Memory Models ---
@@ -319,6 +335,45 @@ LEXICON = {
     ]
 }
 
+# --- Compile-time Semantic Index (scikit-learn and NLTK Tokenizer Boosted) ---
+
+corpus_documents = []
+corpus_metadata = []
+
+# Exclude general conversational domains to prevent false matches on generic phrases like "let us"
+informative_domains = [
+    "physics_sentences", "math_sentences", "philosophy_sentences",
+    "feelings_sentences", "ai_tech_sentences", "art_sentences",
+    "coding_sentences", "cyberpunk_sentences", "history_sentences"
+]
+
+for domain, content in LEXICON.items():
+    if domain in informative_domains and isinstance(content, list):
+        for sentence in content:
+            corpus_documents.append(sentence)
+            corpus_metadata.append({"domain": domain, "sentence": sentence})
+
+# Fit TF-IDF on our informative corpus documents
+vectorizer = TfidfVectorizer(tokenizer=lambda text: word_tokenize(text.lower()), stop_words='english', token_pattern=None)
+tfidf_matrix = vectorizer.fit_transform(corpus_documents)
+
+def find_best_semantic_match(user_input: str) -> Optional[Dict[str, Any]]:
+    """Runs TF-IDF and cosine similarity across all indexed LEXICON sentences to find the best semantic match."""
+    try:
+        query_vector = vectorizer.transform([user_input])
+        similarities = cosine_similarity(query_vector, tfidf_matrix).flatten()
+        best_idx = int(np.argmax(similarities))
+        best_score = float(similarities[best_idx])
+
+        # Apply score threshold to separate strong semantic connections from noise
+        if best_score > 0.15:
+            match_data = corpus_metadata[best_idx].copy()
+            match_data["score"] = best_score
+            return match_data
+    except Exception:
+        pass
+    return None
+
 # --- Instruction Following & Parser ---
 
 class DirectiveExtractor:
@@ -574,7 +629,7 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
     # 12. Boredom
     if has_word(input_lower, ["bored", "boring"]) or "nothing to do" in input_lower or "entertain me" in input_lower:
         return (
-            "Let's resolve that. We can analyze a complex paradox, write optimized code, or discuss a scientific hypothesis. Which vector sounds engaging?"
+            "Let's banish that boredom. We can analyze a complex paradox, write optimized code, or discuss a scientific hypothesis. Which vector sounds engaging?"
         )
 
     # 13. Goodbyes
@@ -640,7 +695,7 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
                 "Exchanging ideas is a dynamic opportunity to build richer mental maps. By examining a concept from multiple logical angles, we stimulate deep, original reasoning. What specific parameter shall we analyze?"
             )
 
-    # 17. Massive Domain Keywords Matching and Topic Setting
+    # 17. Direct whole-word domain triggers (to handle exact domain matches)
 
     # Physics Domain
     if has_word(input_lower, ["physics", "quantum", "relativity", "gravity", "space", "star", "stars", "astronomy", "cosmology", "black hole", "galaxy", "energy", "atom", "atoms", "particle", "particles", "wormhole", "spacetime", "thermodynamic", "entropy"]):
@@ -705,32 +760,34 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
             "Navigating historical civilizational epochs. Understanding ancient structures, from Roman administrative engineering to the Bronze Age Collapse, shows us how systems rise and fall. Studying history provides critical feedback loops for structural planning. What era interests you?"
         )
 
-    # 18. High-Quality Stochastic Custom Fallback / Synthesis Engine
-    # When queries don't fit exact triggers, analyze lexical content and dynamically assemble
-    # a completely custom, elegant response using the massive multi-domain lexicon.
+    # 18. Advanced Semantic TF-IDF Similarity Matcher (scikit-learn & NLTK Boosted)
+    semantic_match = find_best_semantic_match(user_input)
+    if semantic_match:
+        matched_domain = semantic_match["domain"]
+        matched_sentence = semantic_match["sentence"]
 
-    # Identify domain based on input
-    domain = "general"
-    if any(w in input_lower for w in ["physics", "quantum", "gravity", "universe", "relativity", "cosmology", "energy", "atoms"]):
-        domain = "physics"
-    elif any(w in input_lower for w in ["math", "calculus", "primes", "number", "geometry", "equations", "derivative"]):
-        domain = "math"
-    elif any(w in input_lower for w in ["think", "exist", "why", "philosophical", "perception", "mind", "consciousness"]):
-        domain = "philosophy"
-    elif any(w in input_lower for w in ["sad", "happy", "lonely", "joy", "feel", "emotion", "melancholy", "emotions"]):
-        domain = "feelings"
-    elif any(w in input_lower for w in ["ai", "artificial", "intelligence", "neural", "network", "deep learning", "silicon"]):
-        domain = "ai_tech"
-    elif any(w in input_lower for w in ["art", "poetry", "music", "write", "creative", "creation"]):
-        domain = "art"
+        # Map back to a clean topic keyword
+        clean_topic = matched_domain.replace("_intro", "").replace("_sentences", "").replace("_closing", "")
+        brain.last_topic = clean_topic
 
-    intro_list = LEXICON.get(f"{domain}_intro", LEXICON["general_intro"])
-    sentence_list = LEXICON.get(f"{domain}_sentences", LEXICON["general_sentences"])
-    closing_list = LEXICON.get(f"{domain}_closing", LEXICON["general_closing"])
+        # Retrieve the domain-specific intro and closing phrases
+        intro_list = LEXICON.get(f"{clean_topic}_intro", LEXICON["general_intro"])
+        closing_list = LEXICON.get(f"{clean_topic}_closing", LEXICON["general_closing"])
+
+        intro_phrase = random.choice(intro_list)
+        closing_phrase = random.choice(closing_list)
+
+        # Assemble highly logical response
+        return f"{intro_phrase} {matched_sentence} {closing_phrase}"
+
+    # 19. High-Quality Stochastic Custom Fallback / Synthesis Engine
+    # (used only if TF-IDF score is incredibly low)
+    intro_list = LEXICON.get("general_intro")
+    sentence_list = LEXICON.get("general_sentences")
+    closing_list = LEXICON.get("general_closing")
 
     intro = random.choice(intro_list)
     body_sentence_1 = random.choice(sentence_list)
-    # Pick a second different sentence if available
     body_sentence_2 = random.choice([s for s in sentence_list if s != body_sentence_1])
     closing = random.choice(closing_list)
 
