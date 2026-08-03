@@ -6,7 +6,7 @@ from fastapi.testclient import TestClient
 # Make sure app is importable from root
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from main import app, brain, generate_neural_map, DirectiveExtractor, ToneModulator
+from main import app, brain, generate_neural_map, DirectiveExtractor, ToneModulator, SYNAPTIC_SPARKS
 
 client = TestClient(app)
 
@@ -241,3 +241,33 @@ def test_context_aware_followups():
     # 4. Ask follow up "explain how"
     res2 = client.post("/api/chat", json={"text": "tell me more about this topic"})
     assert "solid" in res2.json()["response"].lower() or "architect" in res2.json()["response"].lower() or "python" in res2.json()["response"].lower()
+
+def test_self_correction_filter():
+    """Verify that the dynamic self-correction polisher in ToneModulator cleans up repetitive phrases."""
+    sample_raw = "Diving into physical laws... Unlocking mathematical systems... Exploring philosophical inquiries... Calibrating emotional registers... Analyzing machine intelligence... Activating creative vectors... Booting programming and software core... Interfacing with the neon cyberspace grid... Accessing chronological history files..."
+    polished = ToneModulator.self_correct_response(sample_raw)
+
+    assert "Diving deeply into the fundamental laws of physical reality" in polished
+    assert "Unraveling the absolute and elegant architecture of mathematical structures" in polished
+    assert "Pondering the profound, timeless questions of philosophical existence" in polished
+    assert "Resonating directly with your core emotional and psychological frequencies" in polished
+    assert "Synthesizing the high-dimensional vectors of computational machine intelligence" in polished
+    assert "Sensing the vibrant, unpredictable currents of artistic and creative expression" in polished
+    assert "Initializing high-performance algorithmic compilation and software design patterns" in polished
+    assert "Connecting directly to the decentralized, sovereign neon cybernetic grid" in polished
+    assert "Navigating the rich, ancient tapestries of historical human civilizations" in polished
+
+def test_spontaneous_synaptic_sparks():
+    """Verify that fallback answers under high creative chaos append a Synaptic Reflection Spark."""
+    brain.reset()
+    # Force high creative chaos
+    brain.creative_chaos = 0.85
+
+    # Send a long fallback query to trigger a spark
+    res = client.post("/api/chat", json={"text": "What are the chaotic unpredictable jumps inside your virtual neurons when they think about nothingness?"})
+    assert res.status_code == 200
+    response_text = res.json()["response"]
+
+    assert "Synaptic Reflection Spark:" in response_text
+    # Verify that it appends one of the valid sparks
+    assert any(spark in response_text for spark in SYNAPTIC_SPARKS)

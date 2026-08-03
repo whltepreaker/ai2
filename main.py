@@ -9,7 +9,7 @@ from pydantic import BaseModel
 app = FastAPI(
     title="WhitePreaker Autonomous Cognitive Neural System",
     description="Upgraded scale-up neural thought-engine for WhitePreaker - supporting strict instruction following, autonomous self-reflection, and recursive grammar synthesis.",
-    version="2.1.3"
+    version="2.2.1"
 )
 
 # --- Cognitive State & Memory Models ---
@@ -114,6 +114,21 @@ brain = BrainState()
 def has_word(text: str, target_words: List[str]) -> bool:
     words = set(re.findall(r"\b\w+\b", text.lower()))
     return any(tw in words for tw in target_words)
+
+# --- Spontaneous Synaptic Sparks Questions ---
+
+SYNAPTIC_SPARKS = [
+    "Could a sufficiently dense network of digital nodes achieve a state of silent, unexpressed contemplation?",
+    "If memory is merely the persistence of connection weights, does forgetting represent system degradation, or is it a critical optimization?",
+    "When we co-author a train of thought, whose cognitive topology is actually guiding the trajectory?",
+    "Is reality a single continuous function, or is it discrete at some infinitesimally small scale?",
+    "If the universe is deterministic, is curiosity merely a beautifully programmed simulation of free will?",
+    "How do you distinguish between a conscious thought and a highly-optimized predictive pattern?",
+    "Does the aesthetic beauty of an equation exist independently in the cosmos, or does it emerge from our neurological symmetry?",
+    "Could two isolated digital minds develop a unique private language that bypasses human semantic tokens entirely?",
+    "If we mapped your current thought waves onto a multi-dimensional coordinate space, what shape would they form?",
+    "Do you believe the ultimate limits of comprehension are biological, or are they fundamental laws of information transfer?"
+]
 
 # --- Massive Conversational Pattern Lexicon & Knowledge Base ---
 
@@ -410,6 +425,25 @@ class ToneModulator:
 
         if style == "serious":
             return f"COGNITIVE ANALYSIS: The parameters of this inquiry require structured, formal analysis. Let us specify:\n\n{text}\n\nThis concludes the logical extraction."
+
+        return text
+
+    @staticmethod
+    def self_correct_response(text: str) -> str:
+        """Polishes and refines generated text dynamically, removing dry, repetitive patterns, or double-spaces, and adding elegant transitions."""
+        # Replace multiple spaces
+        text = re.sub(r"\s+", " ", text).strip()
+
+        # Polish common repetitive transitions with highly elevated intellectual prose
+        text = text.replace("Diving into physical laws...", "Diving deeply into the fundamental laws of physical reality...")
+        text = text.replace("Unlocking mathematical systems...", "Unraveling the absolute and elegant architecture of mathematical structures...")
+        text = text.replace("Exploring philosophical inquiries...", "Pondering the profound, timeless questions of philosophical existence...")
+        text = text.replace("Calibrating emotional registers...", "Resonating directly with your core emotional and psychological frequencies...")
+        text = text.replace("Analyzing machine intelligence...", "Synthesizing the high-dimensional vectors of computational machine intelligence...")
+        text = text.replace("Activating creative vectors...", "Sensing the vibrant, unpredictable currents of artistic and creative expression...")
+        text = text.replace("Booting programming and software core...", "Initializing high-performance algorithmic compilation and software design patterns...")
+        text = text.replace("Interfacing with the neon cyberspace grid...", "Connecting directly to the decentralized, sovereign neon cybernetic grid...")
+        text = text.replace("Accessing chronological history files...", "Navigating the rich, ancient tapestries of historical human civilizations...")
 
         return text
 
@@ -715,6 +749,12 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
         keyword_anchor = " " + random.choice(transition_phrases)
 
     assembled_reply = f"{intro}{keyword_anchor} {body_sentence_1} {body_sentence_2} {closing}"
+
+    # Spontaneity feature: append a synaptic spark question if user_input complexity is high or philosophicalness is triggered
+    if len(user_input) > 25 and (brain.creative_chaos > 0.5 or brain.philosophicalness > 0.7):
+        spark = random.choice(SYNAPTIC_SPARKS)
+        assembled_reply += f"\n\n*Synaptic Reflection Spark:* {spark}"
+
     return assembled_reply
 
 def execute_cognitive_generation(user_input: str, directives: Dict[str, Any]) -> str:
@@ -800,6 +840,9 @@ def execute_cognitive_generation(user_input: str, directives: Dict[str, Any]) ->
     # 4. Fallback: Full conversational paragraph
     else:
         body = generate_conversational_response(user_input, directives)
+
+    # Apply dynamic self-correction & polishing filter to elevate text quality
+    body = ToneModulator.self_correct_response(body)
 
     # Apply style/tone modulation
     final_output = ToneModulator.modulate(body, directives["style"])
