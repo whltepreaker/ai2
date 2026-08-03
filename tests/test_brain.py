@@ -269,3 +269,22 @@ def test_spontaneous_synaptic_sparks():
     assert "Synaptic Reflection Spark:" in response_text
     # Verify that it appends one of the valid sparks
     assert any(spark in response_text for spark in SYNAPTIC_SPARKS)
+
+def test_dynamic_semantic_learning_loop():
+    """Verify that WhitePreaker dynamically learns a user's statement at runtime and semantically recalls it."""
+    brain.reset()
+
+    # Send a highly unique informative statement (avoiding formatting trigger words like 'code' or 'python')
+    res1 = client.post("/api/chat", json={"text": "My absolute hidden passphrase key is Delta-Omega-99"})
+    assert res1.status_code == 200
+
+    # Verify statement was learned
+    assert "My absolute hidden passphrase key is Delta-Omega-99" in brain.dynamic_user_corpus
+
+    # Ask a semantic question targeting that learned sentence
+    res2 = client.post("/api/chat", json={"text": "Tell me what is my hidden passphrase key?"})
+    assert res2.status_code == 200
+
+    data = res2.json()
+    assert "Delta-Omega-99" in data["response"]
+    assert "previously mentioned" in data["response"]

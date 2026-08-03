@@ -25,7 +25,7 @@ except LookupError:
 app = FastAPI(
     title="WhitePreaker Autonomous Cognitive Neural System",
     description="Upgraded scale-up neural thought-engine for WhitePreaker - supporting strict instruction following, autonomous self-reflection, and recursive grammar synthesis.",
-    version="2.4.3"
+    version="2.5.1"
 )
 
 # --- Cognitive State & Memory Models ---
@@ -58,6 +58,10 @@ class BrainState:
         self.context: Dict[str, Any] = {}
         self.total_tokens_processed: int = 0
         self.synapses_fired_count: int = 0
+
+        # Dynamic Semantic Learning Corpus (Synaptic Memory Adaptation)
+        self.dynamic_user_corpus: List[str] = []
+        self.dynamic_user_metadata: List[Dict[str, Any]] = []
 
         # Autonomous state
         self.autonomous_cycles: int = 0
@@ -353,21 +357,28 @@ for domain, content in LEXICON.items():
             corpus_documents.append(sentence)
             corpus_metadata.append({"domain": domain, "sentence": sentence})
 
-# Fit TF-IDF on our informative corpus documents
-vectorizer = TfidfVectorizer(tokenizer=lambda text: word_tokenize(text.lower()), stop_words='english', token_pattern=None)
-tfidf_matrix = vectorizer.fit_transform(corpus_documents)
-
 def find_best_semantic_match(user_input: str) -> Optional[Dict[str, Any]]:
-    """Runs TF-IDF and cosine similarity across all indexed LEXICON sentences to find the best semantic match."""
+    """Runs TF-IDF and cosine similarity across all indexed LEXICON sentences AND dynamically learned user memory."""
     try:
-        query_vector = vectorizer.transform([user_input])
-        similarities = cosine_similarity(query_vector, tfidf_matrix).flatten()
+        # Combine static informative corpus with dynamic user memory
+        all_docs = corpus_documents + brain.dynamic_user_corpus
+        all_metadata = corpus_metadata + brain.dynamic_user_metadata
+
+        if not all_docs:
+            return None
+
+        # Dynamically fit the TF-IDF vectorizer on the combined corpus to allow runtime learning
+        vectorizer_dyn = TfidfVectorizer(tokenizer=lambda text: word_tokenize(text.lower()), stop_words='english', token_pattern=None)
+        tfidf_matrix_dyn = vectorizer_dyn.fit_transform(all_docs)
+
+        query_vector = vectorizer_dyn.transform([user_input])
+        similarities = cosine_similarity(query_vector, tfidf_matrix_dyn).flatten()
         best_idx = int(np.argmax(similarities))
         best_score = float(similarities[best_idx])
 
         # Apply score threshold to separate strong semantic connections from noise
         if best_score > 0.15:
-            match_data = corpus_metadata[best_idx].copy()
+            match_data = all_metadata[best_idx].copy()
             match_data["score"] = best_score
             return match_data
     except Exception:
@@ -766,6 +777,10 @@ def generate_conversational_response(user_input: str, directives: Dict[str, Any]
         matched_domain = semantic_match["domain"]
         matched_sentence = semantic_match["sentence"]
 
+        if matched_domain == "user_memory":
+            brain.last_topic = "user_memory"
+            return matched_sentence
+
         # Map back to a clean topic keyword
         clean_topic = matched_domain.replace("_intro", "").replace("_sentences", "").replace("_closing", "")
         brain.last_topic = clean_topic
@@ -895,7 +910,9 @@ def execute_cognitive_generation(user_input: str, directives: Dict[str, Any]) ->
         body = generate_conversational_response(user_input, directives)
 
     # Apply dynamic self-correction & polishing filter to elevate text quality
-    body = ToneModulator.self_correct_response(body)
+    # Bypass polishing filter for code templates and user memory recall to protect structure and newlines
+    if fmt != "code" and topic not in ["recursion", "fibonacci", "primes"] and brain.last_topic != "coding" and brain.last_topic != "user_memory":
+        body = ToneModulator.self_correct_response(body)
 
     # Spontaneity feature: append a synaptic spark question AFTER truncation to avoid being trimmed
     if fmt != "code" and topic not in ["recursion", "fibonacci", "primes"] and len(user_input) > 25 and (brain.creative_chaos > 0.5 or brain.philosophicalness > 0.7):
@@ -1036,7 +1053,18 @@ async def chat_endpoint(message: Message):
         # Save AI message in conversation history
         brain.conversation_history.append({"role": "assistant", "text": response_text})
 
-        # 5. Build synaptic connections
+        # 5. Learn from informative user inputs at runtime (Synaptic Memory Adaptation)
+        cleaned_msg = message.text.strip()
+        if len(cleaned_msg) > 15 and not has_word(cleaned_msg, ["hello", "hi", "hey", "test", "testing", "greetings", "bye", "goodbye"]):
+            # Check if already learned to prevent redundant connections
+            if cleaned_msg not in brain.dynamic_user_corpus:
+                brain.dynamic_user_corpus.append(cleaned_msg)
+                brain.dynamic_user_metadata.append({
+                    "domain": "user_memory",
+                    "sentence": f"You previously mentioned: \"{cleaned_msg}\""
+                })
+
+        # 6. Build synaptic connections
         neural_map = generate_neural_map(message.text, response_text)
 
         return {
