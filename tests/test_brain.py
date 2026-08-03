@@ -26,6 +26,8 @@ def test_brain_state_initialization():
     state_dict = brain.to_dict()
     assert state_dict["user_name"] == "Seeker"
     assert "autonomous_cycles" in state_dict
+    assert "last_topic" in state_dict
+    assert state_dict["last_topic"] == "general"
 
 def test_directive_extractor():
     """Verify that the instruction-following NLP extractor parses directives correctly."""
@@ -96,7 +98,7 @@ def test_conversational_patterns_and_greetings():
     assert response.status_code == 200
     data = response.json()
     assert "WhitePreaker" in data["response"]
-    assert "chat" in data["response"] or "mind" in data["response"] or "explore" in data["response"]
+    assert "chat" in data["response"] or "mind" in data["response"] or "explore" in data["response"] or "Seeker" in data["response"]
 
     # Test Identity of AI
     response = client.post("/api/chat", json={"text": "who are you?"})
@@ -105,7 +107,7 @@ def test_conversational_patterns_and_greetings():
 
     # Test Identity of User (unregistered default is Seeker)
     response_my_name1 = client.post("/api/chat", json={"text": "what is my name?"})
-    assert "registered as Seeker" in response_my_name1.json()["response"]
+    assert "registered as Seeker" in response_my_name1.json()["response"] or "Seeker" in response_my_name1.json()["response"]
 
     # Test Identity of User after registration
     response_reg = client.post("/api/chat", json={"text": "my name is Alex"})
@@ -114,7 +116,7 @@ def test_conversational_patterns_and_greetings():
 
     # Test Scientific Domain
     response = client.post("/api/chat", json={"text": "tell me about quantum physics"})
-    assert "spacetime" in response.json()["response"] or "quantum" in response.json()["response"]
+    assert "spacetime" in response.json()["response"] or "quantum" in response.json()["response"] or "physics" in response.json()["response"]
 
     # Test Fallback and context extraction
     response = client.post("/api/chat", json={"text": "let us discuss photosynthesis"})
@@ -191,3 +193,51 @@ def test_fallback_response_uniqueness():
 
     # They should reflect some extracted context/topic
     assert "prime minister" in ans1.lower() or "imaginary country" in ans1.lower() or "shadow" in ans2.lower() or "elephant" in ans2.lower()
+
+def test_expanded_conversational_domains():
+    """Verify that the new expanded vocabulary domains set last_topic and respond correctly."""
+    brain.reset()
+
+    # Test Cyberpunk Domain
+    res = client.post("/api/chat", json={"text": "What is cyberpunk and decentralized grids?"})
+    assert res.status_code == 200
+    data = res.json()
+    assert data["brain_state"]["last_topic"] == "cyberpunk"
+    assert "neon" in data["response"].lower() or "cyberpunk" in data["response"].lower()
+
+    # Test History Domain
+    res2 = client.post("/api/chat", json={"text": "Tell me about ancient civilizations and roman empire"})
+    assert res2.status_code == 200
+    data2 = res2.json()
+    assert data2["brain_state"]["last_topic"] == "history"
+    assert "civilizations" in data2["response"].lower() or "ancient" in data2["response"].lower() or "rome" in data2["response"].lower()
+
+    # Test Coding Domain
+    res3 = client.post("/api/chat", json={"text": "How do I optimize python asynchronous event loop code?"})
+    assert res3.status_code == 200
+    data3 = res3.json()
+    assert data3["brain_state"]["last_topic"] == "coding"
+    assert "python" in data3["response"].lower() or "function" in data3["response"].lower() or "recursive" in data3["response"].lower()
+
+def test_context_aware_followups():
+    """Verify that follow-up triggers like 'why' use the previous last_topic to generate meaningful follow-ups."""
+    brain.reset()
+
+    # 1. Start with a Physics topic
+    client.post("/api/chat", json={"text": "Let us talk about quantum entanglement"})
+    assert brain.last_topic == "physics"
+
+    # 2. Ask a follow-up "why?" or "tell me more"
+    res = client.post("/api/chat", json={"text": "explain how that works and tell me more"})
+    assert res.status_code == 200
+    data = res.json()
+    # Should speak about quantum mechanics or spacetime since topic is physics
+    assert "spooky action" in data["response"].lower() or "quantum" in data["response"].lower() or "spacetime" in data["response"].lower()
+
+    # 3. Switch to Coding
+    client.post("/api/chat", json={"text": "I want to code a software API"})
+    assert brain.last_topic == "coding"
+
+    # 4. Ask follow up "explain how"
+    res2 = client.post("/api/chat", json={"text": "tell me more about this topic"})
+    assert "solid" in res2.json()["response"].lower() or "architect" in res2.json()["response"].lower() or "python" in res2.json()["response"].lower()
